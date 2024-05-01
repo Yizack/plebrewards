@@ -70,7 +70,7 @@ const deleteReward = async (id_webhook: string, id_reward: string) => {
             <label for="client">Title</label>
           </div>
           <div class="form-floating mb-2">
-            <textarea id="title" v-model="form.description" type="text" class="form-control" placeholder="Title" required maxlength="200" style="height: 150px;" />
+            <textarea id="title" v-model="form.description" type="text" class="form-control" placeholder="Description" maxlength="200" style="height: 150px;" />
             <label for="client">Description</label>
           </div>
           <div class="form-floating">
