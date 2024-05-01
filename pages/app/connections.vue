@@ -1,5 +1,5 @@
 <script setup lang="ts">
-definePageMeta({ middleware: "session" });
+definePageMeta({ layout: "app", middleware: "session" });
 const { user } = useUserSession();
 
 if (!user.value) navigateTo("/");
