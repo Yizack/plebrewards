@@ -1,51 +1,75 @@
 <script setup lang="ts">
+definePageMeta({ middleware: "session" });
 const { user } = useUserSession();
 
+if (!user.value) navigateTo("/");
+
+const { data: connections } = await useFetch(`/api/user/${user.value?.id}/connections`);
+
+const spotifyConnection = ref(connections.value?.find((c) => c.type === "spotify"));
+
 const form = ref({
-  client: "",
+  client: spotifyConnection.value?.client_id || "",
   secret: "",
 });
 
 const linkSpotify = async () => {
   const response = await $fetch("/api/spotify/link", {
-    method: "POST",
+    method: spotifyConnection.value ? "DELETE" : "POST",
     body: {
       id_user: user.value?.id,
       type: "spotify",
-      client_id: form.value.client,
-      client_secret: form.value.secret,
+      client_id: spotifyConnection.value ? undefined : form.value.client,
+      client_secret: spotifyConnection.value ? undefined : form.value.secret
     }
   }).catch(() => null);
 
-  if (!response) return alert("Failed to link Spotify");
-
-  const params = new URLSearchParams({
-    client: form.value.client
-  });
-
-  navigateTo(`/api/auth/spotify?${params.toString()}`, { external: true });
-//
+  if (!response) return;
+  if (!spotifyConnection.value) return navigateTo(`/api/auth/spotify?client=${form.value.client}`, { external: true });
+  spotifyConnection.value = undefined;
+  form.value.client = "";
 };
 </script>
 
 <template>
   <main>
     <h1>Connections</h1>
-    <div class="rounded m-4 p-4 bg-body-secondary">
-      <form @submit.prevent="linkSpotify">
-        <h2>Link Spotify</h2>
-        <div class="form-floating mb-2">
-          <input id="client" v-model="form.client" type="text" class="form-control" placeholder="Client ID" required>
-          <label for="client">Client ID</label>
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="rounded-3 m-4 p-4 bg-body-secondary border border-2 position-relative">
+          <form @submit.prevent="linkSpotify">
+            <div class="d-flex gap-2 justify-content-center align-items-center mb-3">
+              <Icon name="bi:spotify" size="2em" />
+              <h2 class="m-0">Spotify</h2>
+            </div>
+            <div :class="`d-flex gap-2 justify-content-center align-items-center position-absolute top-0 end-0 m-2 px-3 py-1 rounded-pill small ${spotifyConnection ? 'bg-success' : 'bg-secondary'}`">
+              <template v-if="spotifyConnection">
+                <Icon name="solar:link-bold" class="text-white" />
+                <span class="text-white">Linked</span>
+              </template>
+              <template v-else>
+                <span class="text-white">Not connected</span>
+              </template>
+            </div>
+            <div v-if="!spotifyConnection">
+              <div class="form-floating mb-2">
+                <input id="client" v-model="form.client" type="text" class="form-control" placeholder="Client ID" required>
+                <label for="client">Client ID</label>
+              </div>
+              <div class="form-floating">
+                <input id="secret" v-model="form.secret" type="text" class="form-control" placeholder="Client Secret" required>
+                <label for="secret">Client Secret</label>
+              </div>
+            </div>
+            <div class="d-grid">
+              <a type="submit" class="btn btn-lg btn-secondary mt-2 rounded-pill">Learn how to create your app</a>
+              <button type="submit" :class="`btn btn-lg ${spotifyConnection ? 'btn-danger' : 'btn-primary'} mt-2 rounded-pill`">
+                <span>{{ spotifyConnection ? "Unlink" : "Link" }}</span>
+              </button>
+            </div>
+          </form>
         </div>
-        <div class="form-floating">
-          <input id="secret" v-model="form.secret" type="text" class="form-control" placeholder="Client Secret" required>
-          <label for="secret">Client Secret</label>
-        </div>
-        <div class="d-grid">
-          <button type="submit" class="btn btn-primary mt-2">Link</button>
-        </div>
-      </form>
+      </div>
     </div>
   </main>
 </template>

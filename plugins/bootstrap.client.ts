@@ -1,18 +1,28 @@
 import "bootstrap/js/dist/dropdown";
+import "bootstrap/js/dist/tooltip";
 import "bootstrap/js/dist/collapse";
-import Tooltip from "bootstrap/js/dist/tooltip";
 import Offcanvas from "bootstrap/js/dist/offcanvas";
 import Popover from "bootstrap/js/dist/popover";
 import Carousel from "bootstrap/js/dist/carousel";
 import Modal from "bootstrap/js/dist/modal";
 import Toast from "bootstrap/js/dist/toast";
-import Tab from "bootstrap/js/dist/tab";
 
 class Bootstrap {
+  modals = ref<{ id: string; show: boolean }[]>([]);
   hideModal (id: HTMLElement | string) {
-    const el = typeof id === "string" ? `#${id}` : id;
-    const instance = Modal.getInstance(el);
-    if (instance) instance.hide();
+    const idModal = typeof id === "string" ? `#${id}` : id;
+    const instance = Modal.getInstance(idModal);
+    if (instance) {
+      instance.hide();
+    }
+  }
+
+  hideAllModals () {
+    const modals = document.querySelectorAll(".modal.show");
+    for (const modal of modals) {
+      const instance = Modal.getInstance(modal);
+      if (instance) instance.hide();
+    }
   }
 
   hideModalEscEvent () {
@@ -26,16 +36,21 @@ class Bootstrap {
     });
   }
 
-  showModal (id: HTMLElement | string) {
-    const el = typeof id === "string" ? `#${id}` : id;
-    const modal = new Modal(el);
+  showModal (id: Element | string) {
+    const element = typeof id === "string" ? document.querySelector(`#${id}`) : id;
+    if (!element) return;
+    const instance = Modal.getInstance(element);
+    if (instance) {
+      instance.show();
+      return element;
+    }
+    const modal = new Modal(element);
     modal.show();
-    return id;
+    return element;
   }
 
-  showToast (id: HTMLElement | string) {
-    const el = typeof id === "string" ? `#${id}` : id;
-    const instance = Toast.getInstance(el);
+  showToast (id: HTMLElement) {
+    const instance = Toast.getInstance(id);
     if (instance) return;
     const toast = new Toast(id);
     toast.show();
@@ -52,30 +67,30 @@ class Bootstrap {
 
   initializePopover () {
     const popoverList = document.querySelectorAll("[data-bs-toggle=\"popover\"]");
-    [...popoverList].map(e => new Popover(e, { trigger: "hover" }));
+    [...popoverList].map(e => new Popover(e, { trigger: "focus" }));
   }
 
-  initializeTooltip () {
-    const tooltipList = document.querySelectorAll("[data-bs-toggle=\"tooltip\"]");
-    [...tooltipList].map(e => new Tooltip(e, { trigger: "hover" }));
-  }
-
-  showOffcanvas (id: HTMLElement | string) {
-    const el = typeof id === "string" ? `#${id}` : id;
-    const offcanvas = new Offcanvas(el);
+  showOffcanvas (id: HTMLElement) {
+    const instance = Offcanvas.getInstance(id);
+    if (instance) {
+      instance.show();
+      return id;
+    }
+    const offcanvas = new Offcanvas(id);
     offcanvas.show();
     return id;
   }
 
-  initializeTab () {
-    const tab = new Tab(".nav-tabs");
-    tab.show();
+  hideOffcanvas (id: HTMLElement) {
+    const instance = Offcanvas.getInstance(id);
+    if (instance) {
+      instance.hide();
+    }
   }
 }
 
-const bootstrap = new Bootstrap();
-
 export default defineNuxtPlugin(() => {
+  const bootstrap = new Bootstrap();
   return {
     provide: { bootstrap }
   };

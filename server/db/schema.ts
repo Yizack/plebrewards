@@ -1,4 +1,4 @@
-import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
+import { sqliteTable, text, integer, primaryKey } from "drizzle-orm/sqlite-core";
 
 export const users = sqliteTable("users", {
   id_user: integer("id_user").primaryKey(),
@@ -10,7 +10,6 @@ export const users = sqliteTable("users", {
 });
 
 export const connections = sqliteTable("connections", {
-  id: integer("id").primaryKey(),
   id_user: integer("id_user").references(() => users.id_user).notNull(),
   type: text("type").notNull(),
   refresh_token: text("refresh_token"),
@@ -18,4 +17,6 @@ export const connections = sqliteTable("connections", {
   client_secret: text("client_secret").notNull(),
   created_at: integer("created_at").notNull(),
   updated_at: integer("updated_at").notNull()
-});
+}, table => ({
+  pk: primaryKey({ columns: [table.id_user, table.type] })
+}));

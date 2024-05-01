@@ -1,4 +1,5 @@
 <script setup lang="ts">
+definePageMeta({ middleware: "session" });
 const { loggedIn, user, clear } = useUserSession();
 </script>
 

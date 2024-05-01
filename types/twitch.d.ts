@@ -10,6 +10,30 @@ declare global {
     scope: string[];
     token_type: string;
   }
+  interface TwitchWebhooksResponse {
+    total: number;
+    data: {
+      id: string;
+      status: string;
+      type: string;
+      version: string;
+      condition: {
+        broadcaster_user_id: string;
+        reward_id: string;
+      },
+      created_at: string;
+      transport: {
+        method: string;
+        callback: string;
+      },
+      cost: number;
+    }[];
+    max_total_cost: number;
+    total_cost: number;
+    pagination: {
+      cursor: string;
+    }
+  }
   interface TwitchRewardResponse {
     data: {
       broadcaster_name: string;

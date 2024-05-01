@@ -7,6 +7,11 @@ export default defineNuxtConfig({
       htmlAttrs: {
         lang: "en"
       },
+      link: [
+        { rel: "preload", href: "/fonts/Fredoka-Regular.ttf", as: "font", type: "font/ttf", crossorigin: "anonymous" },
+        { rel: "preload", href: "/fonts/Fredoka-Medium.ttf", as: "font", type: "font/ttf", crossorigin: "anonymous" },
+        { rel: "preload", href: "/fonts/Fredoka-SemiBold.ttf", as: "font", type: "font/ttf", crossorigin: "anonymous" },
+      ],
       meta: [
         { name: "robots", content: "index, follow" }
       ]

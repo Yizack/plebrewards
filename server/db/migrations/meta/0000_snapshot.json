@@ -1,19 +1,12 @@
 {
   "version": "5",
   "dialect": "sqlite",
-  "id": "e8aefdf8-fb30-4fab-897a-a6a661f9f641",
+  "id": "424a7f24-7a20-411f-8e4b-d262df9d02b1",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "connections": {
       "name": "connections",
       "columns": {
-        "id": {
-          "name": "id",
-          "type": "integer",
-          "primaryKey": true,
-          "notNull": true,
-          "autoincrement": false
-        },
         "id_user": {
           "name": "id_user",
           "type": "integer",
@@ -80,7 +73,15 @@
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {},
+      "compositePrimaryKeys": {
+        "connections_id_user_type_pk": {
+          "columns": [
+            "id_user",
+            "type"
+          ],
+          "name": "connections_id_user_type_pk"
+        }
+      },
       "uniqueConstraints": {}
     },
     "users": {

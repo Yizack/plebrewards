@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
     secret: config.oauth.twitch.clientSecret
   });
 
-  const response = await twitchAPI.RefreshToken(user?.refresh_token);
+  const response = await twitchAPI.refreshToken(user?.refresh_token);
 
   if (!response) {
     throw createError({

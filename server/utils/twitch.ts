@@ -15,7 +15,7 @@ class Twitch {
     this.secret = options.secret;
   }
 
-  async RefreshToken (refresh_token?: string) {
+  async refreshToken (refresh_token?: string) {
     const oauth_url = `${baseAuthURL}/token`;
     const response = await $fetch<TwitchTokenResponse>(oauth_url, {
       body: `grant_type=refresh_token&refresh_token=${refresh_token}&client_id=${this.client}&client_secret=${this.secret}`,
@@ -36,7 +36,8 @@ class Twitch {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded"
       }
-    });
+    }).catch(() => null);
+    if (!response) return response;
     this.app_access_token = response.access_token;
     return response;
   }
@@ -57,12 +58,41 @@ class Twitch {
     });
   }
 
-  getCustomRewards(broadcaster_id: string) {
-    return $fetch(`${baseURL}/channel_points/custom_rewards?broadcaster_id=${broadcaster_id}`);
+  async getCustomRewards(broadcaster_id: string) {
+    const rewards = await $fetch<TwitchRewardResponse>(`${baseURL}/channel_points/custom_rewards?broadcaster_id=${broadcaster_id}`, {
+      headers: {
+        "client-id": this.client,
+        "Authorization": `Bearer ${this.access_token}`
+      }
+    }).catch(() => null);
+    if (!rewards) return [];
+    return rewards.data;
+  }
+
+  async deleteCustomReward (broadcaster_id: string, reward_id: string) {
+    return $fetch(`${baseURL}/channel_points/custom_rewards?broadcaster_id=${broadcaster_id}&id=${reward_id}`, {
+      method: "DELETE",
+      headers: {
+        "client-id": this.client,
+        "Authorization": `Bearer ${this.access_token}`
+      }
+    });
+  }
+
+  async getWebhooks (broadcaster_id: string) {
+    const subscriptions = await $fetch<TwitchWebhooksResponse>(`${baseURL}/eventsub/subscriptions?broadcaster_user_id=${broadcaster_id}&type=channel.channel_points_custom_reward_redemption.add`, {
+      headers: {
+        "client-id": this.client,
+        "Authorization": `Bearer ${this.app_access_token}`
+      }
+    }).catch(() => null);
+
+    if (!subscriptions) return [];
+    return subscriptions.data;
   }
 
   subscribeToWebhook (broadcaster_id: string, reward_id: string, secret: string) {
-    return $fetch(`${baseURL}/eventsub/subscriptions`, {
+    return $fetch<TwitchWebhooksResponse>(`${baseURL}/eventsub/subscriptions`, {
       method: "POST",
       headers: {
         "client-id": this.client,
@@ -80,6 +110,16 @@ class Twitch {
           callback: (import.meta.dev ? SITE.url.tunnel : SITE.url.prod) + "/api/webhooks/twitch",
           secret: secret
         }
+      }
+    });
+  }
+
+  deleteWebhook (id: string) {
+    return $fetch(`${baseURL}/eventsub/subscriptions?id=${id}`, {
+      method: "DELETE",
+      headers: {
+        "client-id": this.client,
+        "Authorization": `Bearer ${this.app_access_token}`
       }
     });
   }

@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
       client_id: params.client.toString(),
       scope: scopes,
       redirect_uri: redirect
-    });
+    }).catch(() => null);
   }
 
   const session = await requireUserSession(event);
@@ -29,11 +29,13 @@ export default defineEventHandler(async (event) => {
 
   if (!params.code) throw createError({ statusCode: 400, message: "No code provided" });
 
-  const response = await spotifyAPI.oauthCallback(params.code.toString(), redirect);
+  const response = await spotifyAPI.oauthCallback(params.code.toString(), redirect).catch(() => null);
+
+  if (!response) throw createError({ statusCode: 500, message: "Failed to authenticate with Spotify App" });
 
   const connection = await DB.update(tables.connections).set({
     refresh_token: response.refresh_token
-  }).where(eq(tables.connections.id, credentials.id)).returning().get();
+  }).where(eq(tables.connections.id_user, credentials.id_user)).returning().get();
 
   if (!connection) throw createError({ statusCode: 500, message: "Failed to update connection" });
 
