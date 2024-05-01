@@ -103,8 +103,8 @@ class Twitch {
 
     const key = await crypto.subtle.importKey("raw", encoder.encode(secret), algorithm, false, ["sign", "verify"]);
     const signature = await crypto.subtle.sign(algorithm.name, key, encoder.encode(message));
-    const hmac = HMAC_PREFIX + Buffer.from(signature).toString("base64");
-    const verified = await crypto.subtle.verify(algorithm.name, key, Buffer.from(hmac, "base64"), encoder.encode(message));
+    const hmac = HMAC_PREFIX + Buffer.from(signature).toString("hex");
+    const verified = await crypto.subtle.verify(algorithm.name, key, Buffer.from(hmac, "hex"), encoder.encode(message));
     return verified;
   }
 }
