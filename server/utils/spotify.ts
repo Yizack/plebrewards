@@ -94,6 +94,15 @@ class Spotify {
     const parts = urlWithoutQuery .split("/");
     return parts[parts.length - 1];
   }
+
+  getTrack (trackId: string) {
+    return $fetch<SpotifyTrackSearchResponse["tracks"]["items"][0]>(`${baseURL}/tracks/${trackId}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${this.access_token}`
+      }
+    });
+  }
 }
 
 export { Spotify };

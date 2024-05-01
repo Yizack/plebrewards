@@ -43,11 +43,18 @@ export default defineEventHandler(async (event) => {
         await spotifyAPI.addToQueue(search.tracks.items[0].id).catch(() => null);
         const trackName = search.tracks.items[0].name;
         const trackArtists = search.tracks.items[0].artists.map((artist) => artist.name).join(", ");
-        await twitchAPI.sendChatMessage(webhook.broadcaster_user_id, `Added ${trackArtists} - ${trackName} to the queue`).catch(() => null);
+        await twitchAPI.sendChatMessage(webhook.broadcaster_user_id, `Added ${trackArtists} - ${trackName} to the queue.`).catch(() => null);
       }
     }
     else {
-      await spotifyAPI.addToQueue(Spotify.getTrackIdFromURL(webhook.user_input)).catch(() => null);
+      const trackId = Spotify.getTrackIdFromURL(webhook.user_input);
+      await spotifyAPI.addToQueue(trackId).catch(() => null);
+      const track = await spotifyAPI.getTrack(trackId).catch(() => null);
+      if (track) {
+        const trackName = track.name;
+        const trackArtists = track.artists.map((artist) => artist.name).join(", ");
+        await twitchAPI.sendChatMessage(webhook.broadcaster_user_id, `Added ${trackArtists} - ${trackName} to the queue.`).catch(() => null);
+      }
     }
   }
   setResponseStatus(event, 204);
