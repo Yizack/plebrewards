@@ -46,28 +46,29 @@ const deleteReward = async (id_webhook: string, id_reward: string) => {
 
 <template>
   <main>
-    <h1>Setup Twitch Reward</h1>
-    <div class="rounded m-4 p-4 bg-body-secondary">
-      <form @submit.prevent="webhook ? deleteReward(webhook.id, webhook.reward.id) : createReward()">
-        <h2>Create</h2>
-        <div class="form-floating mb-2">
-          <input id="title" v-model="form.title" type="text" class="form-control" placeholder="Title" required>
-          <label for="client">Title</label>
-        </div>
-        <div class="form-floating">
-          <input id="cost" v-model="form.cost" type="number" class="form-control" placeholder="Cost" required>
-          <label for="secret">Cost</label>
-        </div>
-        <div class="d-grid">
-          <button type="submit" :class="`btn btn-lg ${webhook ? 'btn-danger' : 'btn-primary'} mt-2 rounded-pill`">
-            <SpinnerCircle v-if="loading" />
-            <template v-else>
-              <span v-if="webhook">Delete reward</span>
-              <span v-else>Create reward</span>
-            </template>
-          </button>
-        </div>
-      </form>
+    <div class="py-4">
+      <h1 class="mb-4">Setup Twitch Reward</h1>
+      <div class="rounded p-4 bg-body-secondary">
+        <form @submit.prevent="webhook ? deleteReward(webhook.id, webhook.reward.id) : createReward()">
+          <h2>Create</h2>
+          <div class="form-floating mb-2">
+            <input id="title" v-model="form.title" type="text" class="form-control" placeholder="Title" required>
+            <label for="client">Title</label>
+          </div>
+          <div class="form-floating">
+            <input id="cost" v-model="form.cost" type="number" class="form-control" placeholder="Cost" required>
+            <label for="secret">Cost</label>
+          </div>
+          <div class="d-grid">
+            <button type="submit" :class="`btn btn-lg ${webhook ? 'btn-danger' : 'btn-primary'} mt-2 rounded-pill`" :disabled="loading">
+              <Transition name="slide" mode="out-in">
+                <SpinnerCircle v-if="loading" />
+                <span v-else>{{ webhook ? 'Delete reward' : 'Create reward'}}</span>
+              </Transition>
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </main>
 </template>

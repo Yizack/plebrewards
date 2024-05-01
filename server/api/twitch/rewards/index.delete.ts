@@ -34,6 +34,10 @@ export default defineEventHandler(async (event) => {
     });
   }
 
+  if (response.refresh_token !== user?.refresh_token) {
+    await DB.update(tables.users).set({ refresh_token: response.refresh_token }).where(eq(tables.users.id_user, Number(session.user.id))).run();
+  }
+
   if (!query.id_webhook || !query.id_reward) {
     throw createError({
       statusCode: ErrorCode.BAD_REQUEST,

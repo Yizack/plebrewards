@@ -1,7 +1,14 @@
+<script setup lang="ts">
+
+</script>
+
 <template>
   <div id="layout">
-    <div class="container">
-      <slot />
+    <div class="wrapper">
+      <SideBar />
+      <div class="container">
+        <slot />
+      </div>
     </div>
   </div>
 </template>

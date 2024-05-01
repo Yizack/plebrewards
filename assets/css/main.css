@@ -21,3 +21,9 @@
   scrollbar-width: auto;
   scroll-behavior: unset;
 }
+
+@media (max-width: 992px) {
+  .w-lg-100 {
+    width: 100%!important;
+  }
+}
