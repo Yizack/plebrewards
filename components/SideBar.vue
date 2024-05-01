@@ -9,7 +9,7 @@
         <span class="navbar-toggler-icon" />
       </button>
       <div id="offcanvasNavbar" class="offcanvas offcanvas-start show w-lg-100" tabindex="-1" aria-labelledby="offcanvasNavbarLabel" data-bs-scroll="true" data-bs-backdrop="false">
-        <div class="offcanvas-header d-lg-none">
+        <div class="offcanvas-header">
           <h5 id="offcanvasNavbarLabel" class="offcanvas-title">{{ SITE.name }}</h5>
           <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" />
         </div>
