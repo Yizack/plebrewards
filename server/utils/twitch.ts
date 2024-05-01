@@ -1,5 +1,4 @@
 import type { HTTPHeaderName } from "h3";
-import { createHmac, timingSafeEqual } from "crypto";
 
 const baseURL = "https://api.twitch.tv/helix";
 const baseAuthURL = "https://id.twitch.tv/oauth2";
@@ -85,7 +84,7 @@ class Twitch {
     });
   }
 
-  static isValidWebhook (headers: Partial<Record<HTTPHeaderName, string | undefined>>, body: string, secret: string) {
+  static async isValidWebhook (headers: Partial<Record<HTTPHeaderName, string | undefined>>, body: string, secret: string) {
     const TWITCH_MESSAGE_ID = "Twitch-Eventsub-Message-Id".toLowerCase();
     const TWITCH_MESSAGE_TIMESTAMP = "Twitch-Eventsub-Message-Timestamp".toLowerCase();
     const TWITCH_MESSAGE_SIGNATURE = "Twitch-Eventsub-Message-Signature".toLowerCase();
@@ -98,9 +97,15 @@ class Twitch {
     if (!message_id || !message_timestamp || !message_signature) return false;
 
     const message = message_id + message_timestamp + body;
-    const hmac = HMAC_PREFIX + createHmac("sha256", secret).update(message).digest("hex");
 
-    return timingSafeEqual(Buffer.from(hmac), Buffer.from(message_signature));
+    const encoder = new TextEncoder();
+    const algorithm = { name: "HMAC", hash: "SHA-256" };
+
+    const key = await crypto.subtle.importKey("raw", encoder.encode(secret), algorithm, false, ["sign", "verify"]);
+    const signature = await crypto.subtle.sign(algorithm.name, key, encoder.encode(message));
+    const hmac = HMAC_PREFIX + Buffer.from(signature).toString("base64");
+    const verified = await crypto.subtle.verify(algorithm.name, key, Buffer.from(hmac, "base64"), encoder.encode(message));
+    return verified;
   }
 }
 

@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
   if (headers[MESSAGE_TYPE] === MESSAGE_TYPE_VERIFICATION) return body.challenge;
 
   const config = useRuntimeConfig(event);
-  if (Twitch.isValidWebhook(headers, rawBody, config.twitch.webhookSecret)) {
+  if (await Twitch.isValidWebhook(headers, rawBody, config.twitch.webhookSecret)) {
     const webhook = body.event;
     const DB = useDB();
     const connection = await DB.select().from(tables.connections).where(eq(tables.connections.id_user, Number(webhook.broadcaster_user_id))).get();
