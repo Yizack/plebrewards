@@ -9,6 +9,7 @@ const { $toasts } = useNuxtApp();
 
 const form = ref({
   title: webhook.value ? webhook.value.reward.title : "",
+  description: webhook.value ? webhook.value.reward.description : "",
   cost: webhook.value ? webhook.value.reward.cost : null,
 });
 
@@ -27,6 +28,7 @@ const createReward = async () => {
     reward: {
       id: newWebhook.data[0].condition.reward_id,
       title: form.value.title,
+      description: form.value.description || "",
       cost: form.value.cost || 0
     }
   };
@@ -66,6 +68,10 @@ const deleteReward = async (id_webhook: string, id_reward: string) => {
           <div class="form-floating mb-2">
             <input id="title" v-model="form.title" type="text" class="form-control" placeholder="Title" required>
             <label for="client">Title</label>
+          </div>
+          <div class="form-floating mb-2">
+            <textarea id="title" v-model="form.description" type="text" class="form-control" placeholder="Title" required maxlength="200" style="height: 150px;" />
+            <label for="client">Description</label>
           </div>
           <div class="form-floating">
             <input id="cost" v-model="form.cost" type="number" class="form-control" placeholder="Points cost" required>

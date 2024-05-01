@@ -29,7 +29,7 @@ export default defineEventHandler(async (event) => {
     await DB.update(tables.users).set({ refresh_token: response.refresh_token }).where(eq(tables.users.id_user, Number(session.user.id))).run();
   }
 
-  const rewards = await twitchAPI.createCustomReward(session.user.id, body.title.toString(), Number(body.cost));
+  const rewards = await twitchAPI.createCustomReward(session.user.id, body.title.toString(), body.description.toString(), Number(body.cost));
   const appAccess = await twitchAPI.getAppAccessToken();
 
   if (!appAccess) {

@@ -1,17 +1,6 @@
 import { eq } from "drizzle-orm";
 
-export default defineEventHandler(async (event): Promise<{
-  id: string;
-  transport: {
-    method: string;
-    callback: string;
-  };
-  reward: {
-    id: string;
-    title: string;
-    cost: number;
-  };
-}[]> => {
+export default defineEventHandler(async (event) => {
   const session = await requireUserSession(event);
   const config = useRuntimeConfig(event);
 
@@ -68,19 +57,9 @@ export default defineEventHandler(async (event): Promise<{
       reward: {
         id: reward.id,
         title: reward.title,
+        description: reward.prompt,
         cost: reward.cost
       }
     };
-  }).filter((webhook) => webhook !== undefined) as {
-    id: string;
-    transport: {
-      method: string;
-      callback: string;
-    };
-    reward: {
-      id: string;
-      title: string;
-      cost: number;
-    };
-  }[];
+  }).filter((webhook) => webhook !== undefined);
 });

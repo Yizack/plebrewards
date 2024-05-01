@@ -42,7 +42,7 @@ class Twitch {
     return response;
   }
 
-  createCustomReward (broadcaster_id: string, title: string, cost: number) {
+  createCustomReward (broadcaster_id: string, title: string, description: string, cost: number) {
     return $fetch<TwitchRewardResponse>(`${baseURL}/channel_points/custom_rewards?broadcaster_id=${broadcaster_id}`, {
       method: "POST",
       headers: {
@@ -51,9 +51,11 @@ class Twitch {
       },
       body: {
         title,
+        prompt: description,
         cost,
         is_user_input_required: true,
-        background_color: "#1ED760"
+        background_color: "#1ED760",
+        description: description
       }
     });
   }
