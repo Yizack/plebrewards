@@ -1,5 +1,5 @@
 <script setup lang="ts">
-definePageMeta({ middleware: "session" });
+definePageMeta({ layout: "app", middleware: "session" });
 
 const { data: webhooks } = await useFetch("/api/twitch/rewards");
 
@@ -47,10 +47,13 @@ const deleteReward = async (id_webhook: string, id_reward: string) => {
 <template>
   <main>
     <div class="py-4">
-      <h1 class="mb-4">Setup Twitch Reward</h1>
+      <h1 class="mb-4">Setup</h1>
       <div class="rounded p-4 bg-body-secondary">
         <form @submit.prevent="webhook ? deleteReward(webhook.id, webhook.reward.id) : createReward()">
-          <h2>Create</h2>
+          <div class="d-flex gap-2 justify-content-center align-items-center mb-3">
+            <Icon name="bi:twitch" size="2em" />
+            <h2 class="m-0">Twitch Channel Reward</h2>
+          </div>
           <div class="form-floating mb-2">
             <input id="title" v-model="form.title" type="text" class="form-control" placeholder="Title" required>
             <label for="client">Title</label>
