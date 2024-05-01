@@ -17,11 +17,11 @@ const linkSpotify = async () => {
   loading.value = true;
   const response = await $fetch("/api/spotify/link", {
     method: spotifyConnection.value ? "DELETE" : "POST",
-    body: {
+    body: spotifyConnection.value ? undefined : {
       id_user: user.value?.id,
       type: "spotify",
-      client_id: spotifyConnection.value ? undefined : form.value.client,
-      client_secret: spotifyConnection.value ? undefined : form.value.secret
+      client_id: form.value.client,
+      client_secret: form.value.secret
     }
   }).catch(() => null);
   loading.value = false;
