@@ -77,7 +77,7 @@ class Twitch {
         },
         transport: {
           method: "webhook",
-          callback: (import.meta.dev ? SITE.url.dev : SITE.url.prod) + "/api/webhooks/twitch",
+          callback: (import.meta.dev ? SITE.url.tunnel : SITE.url.prod) + "/api/webhooks/twitch",
           secret: secret
         }
       }
@@ -101,11 +101,10 @@ class Twitch {
     const encoder = new TextEncoder();
     const algorithm = { name: "HMAC", hash: "SHA-256" };
 
-    const key = await crypto.subtle.importKey("raw", encoder.encode(secret), algorithm, false, ["sign", "verify"]);
+    const key = await crypto.subtle.importKey("raw", encoder.encode(secret), algorithm, false, ["sign"]);
     const signature = await crypto.subtle.sign(algorithm.name, key, encoder.encode(message));
     const hmac = HMAC_PREFIX + Buffer.from(signature).toString("hex");
-    const verified = await crypto.subtle.verify(algorithm.name, key, Buffer.from(hmac, "hex"), encoder.encode(message));
-    return verified;
+    return hmac === message_signature;
   }
 }
 
