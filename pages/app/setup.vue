@@ -48,8 +48,17 @@ const deleteReward = async (id_webhook: string, id_reward: string) => {
   <main>
     <div class="py-4">
       <h1 class="mb-4">Setup</h1>
-      <div class="rounded p-4 bg-body-secondary">
+      <div class="rounded p-4 bg-body-secondary position-relative">
         <form @submit.prevent="webhook ? deleteReward(webhook.id, webhook.reward.id) : createReward()">
+          <div :class="`d-flex gap-2 justify-content-center align-items-center position-absolute top-0 end-0 m-2 px-3 py-1 rounded-pill small ${webhook ? 'bg-success' : 'bg-secondary'}`">
+            <template v-if="webhook">
+              <Icon name="icon-park-twotone:soap-bubble" class="text-white" />
+              <span class="text-white">Created</span>
+            </template>
+            <template v-else>
+              <span class="text-white">Not created</span>
+            </template>
+          </div>
           <div class="d-flex gap-2 justify-content-center align-items-center mb-3">
             <Icon name="bi:twitch" size="2em" />
             <h2 class="m-0">Twitch Channel Reward</h2>
