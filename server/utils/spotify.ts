@@ -67,14 +67,12 @@ class Spotify {
       limit: options.limit?.toString() || "1"
     });
 
-    const search = $fetch<SpotifyTrackSearchResponse>(`${baseURL}/search?${params.toString()}`, {
+    return $fetch<SpotifyTrackSearchResponse>(`${baseURL}/search?${params.toString()}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${this.access_token}`
       }
     });
-
-    return search;
   }
 
   addToQueue (trackId: string) {

@@ -29,16 +29,17 @@ export default defineEventHandler(async (event) => {
       const search = await spotifyAPI.searchTrack({
         q: webhook.user_input,
         limit: 1
-      });
+      }).catch(() => null);
 
-      if (!search.tracks.items.length) {
+      if (!search || !search.tracks.items.length) {
         console.info("No tracks found");
       }
-
-      await spotifyAPI.addToQueue(search.tracks.items[0].id);
+      else {
+        await spotifyAPI.addToQueue(search.tracks.items[0].id).catch(() => null);
+      }
     }
     else {
-      await spotifyAPI.addToQueue(Spotify.getTrackIdFromURL(webhook.user_input));
+      await spotifyAPI.addToQueue(Spotify.getTrackIdFromURL(webhook.user_input)).catch(() => null);
     }
   }
   setResponseStatus(event, 204);
