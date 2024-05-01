@@ -59,8 +59,8 @@ const deleteReward = async (id_webhook: string, id_reward: string) => {
             <label for="client">Title</label>
           </div>
           <div class="form-floating">
-            <input id="cost" v-model="form.cost" type="number" class="form-control" placeholder="Cost" required>
-            <label for="secret">Cost</label>
+            <input id="cost" v-model="form.cost" type="number" class="form-control" placeholder="Points cost" required>
+            <label for="secret">Points cost</label>
           </div>
           <div class="d-grid">
             <button type="submit" :class="`btn btn-lg ${webhook ? 'btn-danger' : 'btn-primary'} mt-2 rounded-pill`" :disabled="loading">
