@@ -23,6 +23,11 @@ export default defineEventHandler(async (event) => {
       secret: connection?.client_secret
     });
 
+    const twitchAPI = new Twitch({
+      client: config.oauth.twitch.clientId,
+      secret: config.oauth.twitch.clientSecret
+    });
+
     await spotifyAPI.refreshToken(connection?.refresh_token);
     const isURL = Spotify.isValidTrackURL(webhook.user_input);
     if (!isURL) {
@@ -36,6 +41,9 @@ export default defineEventHandler(async (event) => {
       }
       else {
         await spotifyAPI.addToQueue(search.tracks.items[0].id).catch(() => null);
+        const trackName = search.tracks.items[0].name;
+        const trackArtists = search.tracks.items[0].artists.map((artist) => artist.name).join(", ");
+        await twitchAPI.sendChatMessage(webhook.broadcaster_user_id, `Added ${trackArtists} - ${trackName} to the queue`).catch(() => null);
       }
     }
     else {

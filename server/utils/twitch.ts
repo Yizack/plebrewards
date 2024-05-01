@@ -146,6 +146,21 @@ class Twitch {
     const hmac = HMAC_PREFIX + Buffer.from(signature).toString("hex");
     return hmac === message_signature;
   }
+
+  sendChatMessage (broadcaster_id: string, message: string) {
+    return $fetch(`${baseURL}/chat/messages`, {
+      method: "POST",
+      headers: {
+        "client-id": this.client,
+        "Authorization": `Bearer ${this.access_token}`
+      },
+      body: {
+        broadcaster_id: broadcaster_id,
+        sender_id: broadcaster_id,
+        message: message
+      }
+    });
+  }
 }
 
 export { Twitch };

@@ -26,7 +26,13 @@ declare global {
   }
   interface SpotifyTrackSearchResponse {
     tracks: {
-      items: { id: string }[];
+      items: {
+        id: string;
+        name: string;
+        artists: {
+          name: string;
+        }[]
+      }[];
     }
   }
 }
