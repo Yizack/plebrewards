@@ -1,7 +1,7 @@
 export default oauth.twitchEventHandler({
   config: {
     emailRequired: true,
-    scope: ["channel:manage:redemptions"]
+    scope: ["channel:manage:redemptions", "user:write:chat"]
   },
   async onSuccess(event, result) {
     const user = result.user;
