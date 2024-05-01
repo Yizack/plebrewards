@@ -6,6 +6,6 @@ const { loggedIn, user, clear } = useUserSession();
 <template>
   <div v-if="loggedIn">
     <h1>Welcome {{ user?.login }}!</h1>
-    <button @click="clear">Logout</button>
+    <button class="btn btn-primary" @click="clear">Logout</button>
   </div>
 </template>

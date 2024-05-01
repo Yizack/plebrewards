@@ -6,7 +6,10 @@ const { loggedIn, user, clear } = useUserSession();
   <main>
     <div v-if="loggedIn">
       <h1>Welcome {{ user?.login }}!</h1>
-      <button @click="clear">Logout</button>
+      <div class="mb-2">
+        <NuxtLink to="/app">Go to the APP</NuxtLink>
+      </div>
+      <button class="btn btn-primary" @click="clear">Logout</button>
     </div>
     <div v-else>
       <h1>Not logged in</h1>
