@@ -60,7 +60,7 @@ export default defineEventHandler(async (event) => {
         await spotifyAPI.addToQueue(search.tracks.items[0].id).catch(() => null);
         const trackName = search.tracks.items[0].name;
         const trackArtists = search.tracks.items[0].artists.map((artist) => artist.name).join(", ");
-        await twitchAPI.sendChatMessage(webhook.broadcaster_user_id, `Added ${trackArtists} - ${trackName} to the queue.`);
+        await twitchAPI.sendChatMessage(webhook.broadcaster_user_id, `Added "${trackArtists} - ${trackName}" to the queue.`);
       }
     }
     else {
