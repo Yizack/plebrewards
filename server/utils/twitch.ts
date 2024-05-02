@@ -163,6 +163,19 @@ class Twitch {
       }
     });
   }
+
+  updateRedemption (id: string, broadcaster_id: string, reward_id: string, status: "FULFILLED" | "CANCELED") {
+    return $fetch(`${baseURL}/channel_points/custom_rewards/redemptions?id=${id}&broadcaster_id=${broadcaster_id}&reward_id=${reward_id}`, {
+      method: "PATCH",
+      headers: {
+        "client-id": this.client,
+        "Authorization": `Bearer ${this.access_token}`
+      },
+      body: {
+        status: status
+      }
+    });
+  }
 }
 
 export { Twitch };

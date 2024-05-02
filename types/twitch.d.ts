@@ -34,6 +34,28 @@ declare global {
       cursor: string;
     }
   }
+  interface TwitchWebhookPost {
+    subscription: TwitchWebhooksResponse["data"][0],
+    event?: {
+      broadcaster_user_id: string;
+      broadcaster_user_login: string;
+      broadcaster_user_name: string;
+      id: string;
+      user_id: string;
+      user_login: string;
+      user_name: string;
+      user_input: string;
+      status: string;
+      redeemed_at: string;
+      reward: {
+        id: string;
+        title: string;
+        prompt: string;
+        cost: number;
+      }
+    }
+   challenge?: string;
+  }
   interface TwitchRewardResponse {
     data: {
       broadcaster_name: string;

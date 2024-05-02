@@ -75,14 +75,14 @@ class Spotify {
     });
   }
 
-  addToQueue (trackId: string) {
+  async addToQueue (trackId: string) {
     const uriEncoded = encodeURIComponent(`spotify:track:${trackId}`);
-    return $fetch(`${baseURL}/me/player/queue?uri=${uriEncoded}`, {
+    return await $fetch(`${baseURL}/me/player/queue?uri=${uriEncoded}`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${this.access_token}`
       }
-    });
+    }).then(() => true).catch(() => false);
   }
 
   static isValidTrackURL (url: string) {
