@@ -1,3 +1,5 @@
+import { SITE } from "../utils/site";
+
 export default defineNuxtConfig({
   app: {
     head: {
@@ -50,9 +52,16 @@ export default defineNuxtConfig({
     storageKey: "nuxt-color-mode"
   },
   site: {
-    url: ""
+    url: SITE.url.prod
   },
   nitro: {
+    cloudflare: {
+      pages: {
+        routes: {
+          exclude: ["/docs/*"]
+        }
+      }
+    },
     prerender: {
       routes: ["/sitemap.xml"],
     }
@@ -66,10 +75,7 @@ export default defineNuxtConfig({
     ]
   },
   routeRules: {
-    "/docs/**": {
-      experimentalNoScripts: true
-    },
-    "/": { sitemap: { priority: 1 } },
+    "/": { sitemap: { priority: 1 }},
     "/*/**": { sitemap: { priority: 0.8, lastmod: new Date().toISOString() } }
   }
 });

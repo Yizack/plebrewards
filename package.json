@@ -22,7 +22,7 @@
     "lint": "npm run lint:eslint && npm run lint:stylelint",
     "lint:eslint": "eslint --fix --config .config/eslint.mjs",
     "lint:stylelint": "stylelint \"**/*.css\" --fix --config .config/stylelint.json",
-    "dev:cf": "npm run build && npx wrangler dev dist/_worker.js",
+    "cf:dev": "npm run build && wrangler pages dev dist",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:serve": "vitepress serve docs"
@@ -41,6 +41,7 @@
     "nuxt-auth-utils": "^0.0.24",
     "nuxt-icon": "^0.6.10",
     "stylelint-config-standard": "^36.0.0",
-    "vitepress": "^1.1.4"
+    "vitepress": "^1.1.4",
+    "wrangler": "^3.53.1"
   }
 }
