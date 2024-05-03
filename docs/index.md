@@ -1,6 +1,6 @@
 ---
-title: 'Docs | Pleb Rewards'
-description: 'Documentation for Pleb Rewards'
+title: "Docs | Pleb Rewards"
+description: "Documentation for Pleb Rewards"
 ---
 
 # Introduction

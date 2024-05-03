@@ -1,6 +1,6 @@
 ---
-title: 'Spotify | Pleb Rewards'
-description: 'Spotify connection step by step guide for Pleb Rewards'
+title: "Spotify | Pleb Rewards"
+description: "Spotify connection step by step guide for Pleb Rewards"
 ---
 
 # Create Your App
@@ -20,4 +20,4 @@ This is a step-by-step tutorial on how to create your Spotify app and link it to
 8. Click on View client secret.
 9. Copy and paste the Client ID and Client Secret into the Spotify connection form in Pleb Rewards.
 10. Click on "Link" and approve the app.
-11. You're all set! Enjoy Pleb Rewards for Twitch with Spotify!
+11. You"re all set! Enjoy Pleb Rewards for Twitch with Spotify!
