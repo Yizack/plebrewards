@@ -31,12 +31,12 @@ export default defineEventHandler(async (event) => {
     secret: config.oauth.twitch.clientSecret
   });
 
-  const spotifyRefresh = await spotifyAPI.refreshToken(connection?.refresh_token);
+  const spotifyTokens = await spotifyAPI.refreshToken(connection?.refresh_token);
 
-  if (!spotifyRefresh) throw createError({ statusCode: ErrorCode.BAD_REQUEST, message: "Failed to get Spotify access token" });
+  if (!spotifyTokens) throw createError({ statusCode: ErrorCode.BAD_REQUEST, message: "Failed to get Spotify access token" });
 
-  if (spotifyRefresh.refresh_token !== connection?.refresh_token) {
-    await DB.update(tables.users).set({ refresh_token: spotifyRefresh.refresh_token }).where(eq(tables.users.id_user, Number(webhookEvent.broadcaster_user_id))).run();
+  if (spotifyTokens.refresh_token !== connection?.refresh_token) {
+    await DB.update(tables.users).set({ refresh_token: spotifyTokens.refresh_token }).where(eq(tables.users.id_user, Number(webhookEvent.broadcaster_user_id))).run();
   }
 
   const isURL = Spotify.isValidTrackURL(webhookEvent.user_input);
@@ -44,12 +44,12 @@ export default defineEventHandler(async (event) => {
     refresh_token: tables.users.refresh_token
   }).from(tables.users).where(eq(tables.users.id_user, Number(webhookEvent.broadcaster_user_id))).get();
 
-  const twitchRefresh = await twitchAPI.refreshToken(user?.refresh_token);
+  const twitchTokens = await twitchAPI.refreshToken(user?.refresh_token);
 
-  if (!twitchRefresh) throw createError({ statusCode: ErrorCode.BAD_REQUEST, message: "Failed to get Twitch access token" });
+  if (!twitchTokens) throw createError({ statusCode: ErrorCode.BAD_REQUEST, message: "Failed to get Twitch access token" });
 
-  if (twitchRefresh.refresh_token !== user?.refresh_token) {
-    await DB.update(tables.users).set({ refresh_token: twitchRefresh.refresh_token }).where(eq(tables.users.id_user, Number(webhookEvent.broadcaster_user_id))).run();
+  if (twitchTokens.refresh_token !== user?.refresh_token) {
+    await DB.update(tables.users).set({ refresh_token: twitchTokens.refresh_token }).where(eq(tables.users.id_user, Number(webhookEvent.broadcaster_user_id))).run();
   }
 
   setResponseStatus(event, 204);
