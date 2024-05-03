@@ -35,6 +35,10 @@ export default defineEventHandler(async (event) => {
 
   if (!spotifyRefresh) throw createError({ statusCode: ErrorCode.BAD_REQUEST, message: "Failed to get Spotify access token" });
 
+  if (spotifyRefresh.refresh_token !== connection?.refresh_token) {
+    await DB.update(tables.users).set({ refresh_token: spotifyRefresh.refresh_token }).where(eq(tables.users.id_user, Number(webhookEvent.broadcaster_user_id))).run();
+  }
+
   const isURL = Spotify.isValidTrackURL(webhookEvent.user_input);
   const user = await DB.select({
     refresh_token: tables.users.refresh_token
