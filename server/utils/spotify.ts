@@ -55,9 +55,9 @@ class Spotify {
         "Content-Type": "application/x-www-form-urlencoded",
         "Authorization": `Basic ${btoa(`${this.client}:${this.secret}`)}`
       },
-    });
-    this.access_token = response.access_token;
-    return response.access_token;
+    }).catch(() => null);
+    if (response) this.access_token = response.access_token;
+    return response;
   }
 
   searchTrack (options: SpotifySearchOptions) {

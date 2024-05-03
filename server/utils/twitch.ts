@@ -23,8 +23,8 @@ class Twitch {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded"
       }
-    });
-    this.access_token = response.access_token;
+    }).catch(() => null);
+    if (response) this.access_token = response.access_token;
     return response;
   }
 
