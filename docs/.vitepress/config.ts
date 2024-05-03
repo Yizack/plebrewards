@@ -13,6 +13,13 @@ export default defineConfig({
     ],
     sidebar: [
       {
+        text: "Connections",
+        collapsed: false,
+        items: [
+          { text: "Spotify", link: "/connections/spotify" }
+        ]
+      },
+      {
         text: "Twitch Rewards",
         collapsed: false,
         items: [
