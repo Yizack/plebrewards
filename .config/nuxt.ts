@@ -67,9 +67,7 @@ export default defineNuxtConfig({
   },
   routeRules: {
     "/docs/**": {
-      sitemap: { priority: 0.5 },
-      static: true,
-      ssr: false
+      experimentalNoScripts: true
     },
     "/": { sitemap: { priority: 1 } },
     "/*/**": { sitemap: { priority: 0.8, lastmod: new Date().toISOString() } }
