@@ -6,7 +6,7 @@ export default defineConfig({
   base: "/docs/",
   lang: "en-US",
   title: "Pleb Rewards",
-  description: "Vite & Vue powered static site generator.",
+  description: "Pleb Rewards for your Twitch Channel",
   cleanUrls: true,
   themeConfig: {
     nav: [
@@ -30,6 +30,10 @@ export default defineConfig({
     ],
     socialLinks: [
       { icon: "github", link: "https://github.com/Yizack/plebrewards" }
-    ]
+    ],
+    editLink: {
+      pattern: "https://github.com/Yizack/plebrewards/edit/main/docs/:path",
+      text: "Edit this page on GitHub"
+    }
   }
 });
