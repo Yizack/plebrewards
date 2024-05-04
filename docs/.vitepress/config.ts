@@ -34,6 +34,10 @@ export default defineConfig({
     editLink: {
       pattern: "https://github.com/Yizack/plebrewards/edit/main/docs/:path",
       text: "Edit this page on GitHub"
+    },
+    search: {
+      provider: "local"
     }
-  }
+  },
+  lastUpdated: true
 });
