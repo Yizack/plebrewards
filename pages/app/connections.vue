@@ -59,7 +59,7 @@ const linkSpotify = async () => {
                   <label for="client">Client ID</label>
                 </div>
                 <div class="form-floating">
-                  <input id="secret" v-model="form.secret" type="password" class="form-control" placeholder="Client Secret" required>
+                  <input id="secret" v-model="form.secret" type="text" class="form-control" placeholder="Client Secret" required>
                   <label for="secret">Client Secret</label>
                 </div>
               </div>
