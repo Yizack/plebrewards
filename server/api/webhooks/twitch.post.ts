@@ -18,6 +18,8 @@ export default defineEventHandler(async (event) => {
   if (!isvalidWebhook || !body.event) throw createError({ statusCode: ErrorCode.UNAUTHORIZED, message: "Invalid webhook" });
 
   const webhookEvent = body.event;
+  const user_input = webhookEvent.user_input.trim();
+
   const DB = useDB();
   const today = Date.now();
 
@@ -65,9 +67,9 @@ export default defineEventHandler(async (event) => {
     id: ""
   };
 
-  if (!Spotify.isValidTrackURL(webhookEvent.user_input)) {
+  if (!Spotify.isValidTrackURL(user_input)) {
     const search = await spotifyAPI.searchTrack({
-      q: webhookEvent.user_input,
+      q: user_input,
       limit: 1
     });
 
@@ -84,7 +86,7 @@ export default defineEventHandler(async (event) => {
     track.artists = search.tracks.items[0].artists.map((artist) => artist.name).join(", ");
   }
   else {
-    track.id = Spotify.getTrackIdFromURL(webhookEvent.user_input);
+    track.id = Spotify.getTrackIdFromURL(user_input);
     const trackResponse = await spotifyAPI.getTrack(track.id);
     if (trackResponse) {
       track.name = trackResponse.name;
