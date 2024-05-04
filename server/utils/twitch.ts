@@ -13,6 +13,7 @@ class Twitch {
   constructor (options: TwitchApiOptions) {
     this.client = options.client;
     this.secret = options.secret;
+    this.access_token = options.access_token;
   }
 
   async refreshToken (refresh_token?: string) {
@@ -72,13 +73,13 @@ class Twitch {
   }
 
   async deleteCustomReward (broadcaster_id: string, reward_id: string) {
-    return $fetch(`${baseURL}/channel_points/custom_rewards?broadcaster_id=${broadcaster_id}&id=${reward_id}`, {
+    return await $fetch(`${baseURL}/channel_points/custom_rewards?broadcaster_id=${broadcaster_id}&id=${reward_id}`, {
       method: "DELETE",
       headers: {
         "client-id": this.client,
         "Authorization": `Bearer ${this.access_token}`
       }
-    });
+    }).then(() => true).catch(() => false);
   }
 
   async getWebhooks (broadcaster_id: string) {
@@ -116,14 +117,14 @@ class Twitch {
     });
   }
 
-  deleteWebhook (id: string) {
-    return $fetch(`${baseURL}/eventsub/subscriptions?id=${id}`, {
+  async deleteWebhook (id: string) {
+    return await $fetch(`${baseURL}/eventsub/subscriptions?id=${id}`, {
       method: "DELETE",
       headers: {
         "client-id": this.client,
         "Authorization": `Bearer ${this.app_access_token}`
       }
-    });
+    }).then(() => true).catch(() => false);
   }
 
   static async isValidWebhook (headers: Partial<Record<HTTPHeaderName, string | undefined>>, body: string, secret: string) {
@@ -175,6 +176,10 @@ class Twitch {
         status: status
       }
     });
+  }
+
+  static isAccessTokenExpired (expires_at: number) {
+    return Date.now() >= expires_at;
   }
 }
 

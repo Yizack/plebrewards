@@ -14,9 +14,8 @@ declare module "#auth-utils" {
     created_at: string;
     tokens: {
       access_token: string;
-      expires_in: number;
       refresh_token: string;
-      token_type: string;
+      expires_at: number;
     }
   }
 

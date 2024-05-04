@@ -16,13 +16,20 @@
 }
 
 :root {
-  --bs-body-font-family: fredoka;
+  --bs-body-font-family: Fredoka;
 
   scrollbar-width: auto;
   scroll-behavior: unset;
 }
 
+.wrapper {
+  margin-left: 400px;
+}
+
 @media (max-width: 992px) {
+  .wrapper {
+    margin-left: 0!important;
+  }
   .w-lg-100 {
     width: 100%!important;
   }

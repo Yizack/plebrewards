@@ -1,43 +1,21 @@
-import { eq } from "drizzle-orm";
-
 export default defineEventHandler(async (event) => {
   const session = await requireUserSession(event);
   const config = useRuntimeConfig(event);
 
   const twitchAPI = new Twitch({
     client: config.oauth.twitch.clientId,
-    secret: config.oauth.twitch.clientSecret
+    secret: config.oauth.twitch.clientSecret,
+    access_token: session.user.tokens.access_token
   });
 
-  const appAccess = await twitchAPI.getAppAccessToken();
-
-  if (!appAccess) {
-    throw createError({
-      statusCode: ErrorCode.BAD_REQUEST,
-      message: "Failed to get app access token"
-    });
-  }
+  const accessResponse = await twitchAPI.getAppAccessToken();
+  if (!accessResponse) throw createError({ statusCode: ErrorCode.INTERNAL_SERVER_ERROR, message: "An error occurred. Please try again." });
 
   const webhooks = await twitchAPI.getWebhooks(session.user.id);
-
   if (!webhooks.length) return [];
 
-  const DB = useDB();
-  const user = await DB.select({
-    refresh_token: tables.users.refresh_token
-  }).from(tables.users).where(eq(tables.users.id_user, Number(session.user.id))).get();
-
-  const response = await twitchAPI.refreshToken(user?.refresh_token);
-
-  if (!response) {
-    throw createError({
-      statusCode: ErrorCode.BAD_REQUEST,
-      message: "Failed to get access token"
-    });
-  }
-
-  if (response.refresh_token !== user?.refresh_token) {
-    await DB.update(tables.users).set({ refresh_token: response.refresh_token }).where(eq(tables.users.id_user, Number(session.user.id))).run();
+  if (Twitch.isAccessTokenExpired(session.user.tokens.expires_at)) {
+    await updateTwitchRefreshToken(event, twitchAPI, session.user);
   }
 
   const rewards = await twitchAPI.getCustomRewards(session.user.id);

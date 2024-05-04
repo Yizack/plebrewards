@@ -5,9 +5,13 @@ export default oauth.twitchEventHandler({
   },
   async onSuccess(event, result) {
     const user = result.user;
-    user.tokens = result.tokens;
-
     const today = Date.now();
+
+    user.tokens = {
+      access_token: result.tokens.access_token,
+      refresh_token: result.tokens.refresh_token,
+      expires_at: today + (result.tokens.expires_in * 1000)
+    };
 
     const DB = useDB();
     await DB.insert(tables.users).values({

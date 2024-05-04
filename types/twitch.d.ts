@@ -2,6 +2,7 @@ declare global {
   interface TwitchApiOptions {
     client: string;
     secret: string;
+    access_token?: string;
   }
   interface TwitchTokenResponse {
     access_token: string;

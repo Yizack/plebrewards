@@ -1,7 +1,7 @@
 <script setup lang="ts">
 definePageMeta({ layout: "app", middleware: "session" });
 
-const { data: webhooks } = await useFetch("/api/twitch/rewards");
+const { data: webhooks } = await useFetch("/api/twitch/rewards/spotify-sr");
 
 const webhook = ref(webhooks.value ? webhooks.value[0] : null);
 const loading = ref(false);
@@ -15,7 +15,7 @@ const form = ref({
 
 const createReward = async () => {
   loading.value = true;
-  const newWebhook = await $fetch("/api/twitch/rewards", {
+  const newWebhook = await $fetch("/api/twitch/rewards/spotify-sr", {
     method: "POST",
     body: form.value
   }).catch(() => null);
@@ -36,7 +36,7 @@ const createReward = async () => {
 
 const deleteReward = async (id_webhook: string, id_reward: string) => {
   loading.value = true;
-  const remove = await $fetch(`/api/twitch/rewards?id_webhook=${id_webhook}&id_reward=${id_reward}`, {
+  const remove = await $fetch(`/api/twitch/rewards/spotify-sr?id_webhook=${id_webhook}&id_reward=${id_reward}`, {
     method: "DELETE"
   }).catch(() => null);
   loading.value = false;
