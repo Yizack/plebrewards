@@ -66,7 +66,7 @@ onMounted(() => {
       </div>
       <div class="ms-auto">
         <div class="">
-          <NuxtLink class="btn btn-primary rounded-pill d-flex align-items-center gap-1">
+          <NuxtLink class="btn btn-primary rounded-pill d-flex align-items-center gap-1" to="/app">
             <img :src="user?.profile_image_url" class="border rounded-circle" width="30" height="30">
             <span>{{ user?.display_name }}</span>
           </NuxtLink>
