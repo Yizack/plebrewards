@@ -1,0 +1,6 @@
+[data-bs-theme="dark"] {
+  --bs-primary: #6ea8fe;
+  --bs-primary-rgb: 110, 168, 254;
+  --bs-primary-hover: #5e9cfa;
+  --bs-primary-hover-rgb: 94, 156, 250;
+}

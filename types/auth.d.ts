@@ -12,6 +12,7 @@ declare module "#auth-utils" {
     view_count: number;
     email: string;
     created_at: string;
+    updated_at: string;
     tokens: {
       access_token: string;
       refresh_token: string;

@@ -9,7 +9,7 @@ const { loggedIn, user, clear } = useUserSession();
       <div class="mb-2">
         <NuxtLink to="/app">Go to the APP</NuxtLink>
       </div>
-      <button class="btn btn-primary" @click="clear">Logout</button>
+      <button class="btn btn-primary rounded-pill" @click="clear">Logout</button>
     </div>
     <div v-else>
       <h1>Not logged in</h1>

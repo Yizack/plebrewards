@@ -38,6 +38,5 @@ export default defineConfig({
     search: {
       provider: "local"
     }
-  },
-  lastUpdated: true
+  }
 });

@@ -14,7 +14,7 @@ export default oauth.twitchEventHandler({
     };
 
     const DB = useDB();
-    await DB.insert(tables.users).values({
+    const app_user = await DB.insert(tables.users).values({
       id_user: Number(user.id),
       user_login: user.login,
       username: user.display_name,
@@ -30,6 +30,9 @@ export default oauth.twitchEventHandler({
         updated_at: today,
       }
     }).returning().get();
+
+    user.created_at = app_user.created_at;
+    user.updated_at = app_user.updated_at;
 
     await setUserSession(event, { user });
     return sendRedirect(event, "/app");
