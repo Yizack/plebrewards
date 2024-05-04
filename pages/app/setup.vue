@@ -50,42 +50,42 @@ const deleteReward = async (id_webhook: string, id_reward: string) => {
   <main>
     <div class="py-4">
       <h1 class="mb-4">Setup</h1>
-      <div class="rounded p-4 bg-body-secondary position-relative">
-        <form @submit.prevent="webhook ? deleteReward(webhook.id, webhook.reward.id) : createReward()">
-          <div :class="`d-flex gap-2 justify-content-center align-items-center position-absolute top-0 end-0 m-2 px-3 py-1 rounded-pill small ${webhook ? 'bg-success' : 'bg-secondary'}`">
-            <template v-if="webhook">
-              <Icon name="icon-park-twotone:soap-bubble" class="text-white" />
-              <span class="text-white">Created</span>
-            </template>
-            <template v-else>
-              <span class="text-white">Not created</span>
-            </template>
+      <div class="row flex-gap-1">
+        <div class="col-lg-12">
+          <div class="rounded p-4 bg-body-secondary position-relative">
+            <form @submit.prevent="webhook ? deleteReward(webhook.id, webhook.reward.id) : createReward()">
+              <div :class="`d-flex gap-1 justify-content-center align-items-center position-absolute top-0 end-0 m-2 px-3 py-1 rounded-pill small text-white ${webhook ? 'bg-success' : 'bg-secondary'}`">
+                <Icon name="solar:record-bold-duotone" size="1rem" />
+                <span v-if="webhook" class="d-none d-lg-block">Created</span>
+                <span v-else class="d-none d-lg-block">Not created</span>
+              </div>
+              <div class="d-flex gap-2 justify-content-center align-items-center mb-3">
+                <Icon name="bi:twitch" size="2em" />
+                <h2 class="m-0">Spotify SR</h2>
+              </div>
+              <div class="form-floating mb-2">
+                <input id="title" v-model="form.title" type="text" class="form-control" placeholder="Title" required>
+                <label for="client">Title</label>
+              </div>
+              <div class="form-floating mb-2">
+                <textarea id="title" v-model="form.description" type="text" class="form-control" placeholder="Description" maxlength="200" style="height: 150px;" />
+                <label for="client">Description</label>
+              </div>
+              <div class="form-floating">
+                <input id="cost" v-model="form.cost" type="number" class="form-control" placeholder="Points cost" required>
+                <label for="secret">Points cost</label>
+              </div>
+              <div class="d-grid">
+                <button type="submit" :class="`btn btn-lg ${webhook ? 'btn-danger' : 'btn-primary'} mt-2 rounded-pill`" :disabled="loading">
+                  <Transition name="slide" mode="out-in">
+                    <SpinnerCircle v-if="loading" />
+                    <span v-else>{{ webhook ? 'Delete reward' : 'Create reward'}}</span>
+                  </Transition>
+                </button>
+              </div>
+            </form>
           </div>
-          <div class="d-flex gap-2 justify-content-center align-items-center mb-3">
-            <Icon name="bi:twitch" size="2em" />
-            <h2 class="m-0">Twitch Channel Reward</h2>
-          </div>
-          <div class="form-floating mb-2">
-            <input id="title" v-model="form.title" type="text" class="form-control" placeholder="Title" required>
-            <label for="client">Title</label>
-          </div>
-          <div class="form-floating mb-2">
-            <textarea id="title" v-model="form.description" type="text" class="form-control" placeholder="Description" maxlength="200" style="height: 150px;" />
-            <label for="client">Description</label>
-          </div>
-          <div class="form-floating">
-            <input id="cost" v-model="form.cost" type="number" class="form-control" placeholder="Points cost" required>
-            <label for="secret">Points cost</label>
-          </div>
-          <div class="d-grid">
-            <button type="submit" :class="`btn btn-lg ${webhook ? 'btn-danger' : 'btn-primary'} mt-2 rounded-pill`" :disabled="loading">
-              <Transition name="slide" mode="out-in">
-                <SpinnerCircle v-if="loading" />
-                <span v-else>{{ webhook ? 'Delete reward' : 'Create reward'}}</span>
-              </Transition>
-            </button>
-          </div>
-        </form>
+        </div>
       </div>
     </div>
   </main>

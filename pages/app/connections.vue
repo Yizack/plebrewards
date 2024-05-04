@@ -44,14 +44,10 @@ const linkSpotify = async () => {
                 <Icon name="bi:spotify" size="2em" />
                 <h2 class="m-0">Spotify</h2>
               </div>
-              <div :class="`d-flex gap-2 justify-content-center align-items-center position-absolute top-0 end-0 m-2 px-3 py-1 rounded-pill small ${spotifyConnection ? 'bg-success' : 'bg-secondary'}`">
-                <template v-if="spotifyConnection">
-                  <Icon name="solar:link-bold" class="text-white" />
-                  <span class="text-white">Linked</span>
-                </template>
-                <template v-else>
-                  <span class="text-white">Not connected</span>
-                </template>
+              <div :class="`d-flex gap-2 justify-content-center align-items-center position-absolute top-0 end-0 m-2 px-3 py-1 rounded-pill small text-white ${spotifyConnection ? 'bg-success' : 'bg-secondary'}`">
+                <Icon name="solar:link-round-angle-bold-duotone" size="1rem" />
+                <span v-if="spotifyConnection" class="d-none d-lg-block">Linked</span>
+                <span v-else class="d-none d-lg-block">Not connected</span>
               </div>
               <div v-if="!spotifyConnection">
                 <div class="form-floating mb-2">
@@ -64,7 +60,7 @@ const linkSpotify = async () => {
                 </div>
               </div>
               <div class="d-grid">
-                <a type="submit" class="btn btn-lg btn-secondary mt-2 rounded-pill" href="/docs/connections/spotify">Learn how to create your app</a>
+                <a type="submit" class="btn btn-lg btn-secondary mt-2 rounded-pill" href="/docs/connections/spotify" target="_blank">Learn how to create your app</a>
                 <button type="submit" :class="`btn btn-lg ${spotifyConnection ? 'btn-danger' : 'btn-primary'} mt-2 rounded-pill`" :disabled="loading">
                   <Transition name="slide" mode="out-in">
                     <SpinnerCircle v-if="loading" />
