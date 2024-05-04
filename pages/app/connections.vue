@@ -39,7 +39,7 @@ const linkSpotify = async () => {
       <div class="row flex-gap-1">
         <div class="col-lg-6">
           <div class="rounded-3 p-4 bg-body-secondary border border-2 position-relative">
-            <form @submit.prevent="linkSpotify">
+            <form autocomplete="off" @submit.prevent="linkSpotify">
               <div class="d-flex gap-2 justify-content-center align-items-center mb-3">
                 <Icon name="bi:spotify" size="2em" />
                 <h2 class="m-0">Spotify</h2>
@@ -59,7 +59,7 @@ const linkSpotify = async () => {
                   <label for="client">Client ID</label>
                 </div>
                 <div class="form-floating">
-                  <input id="secret" v-model="form.secret" type="text" class="form-control" placeholder="Client Secret" required>
+                  <input id="secret" v-model="form.secret" type="password" class="form-control" placeholder="Client Secret" required>
                   <label for="secret">Client Secret</label>
                 </div>
               </div>
