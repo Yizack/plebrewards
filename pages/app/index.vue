@@ -9,7 +9,7 @@ const { data: connections } = await useFetch(`/api/user/${user.value?.id}/connec
     <h1 class="mb-4">Profile</h1>
     <div class="row flex-gap-1">
       <div class="col-lg-8">
-        <div class="rounded p-4 bg-body-secondary">
+        <div class="rounded-3 p-4 bg-body-secondary border border-2">
           <div v-if="loggedIn">
             <div class="d-flex gap-2 align-items-center mb-3">
               <img :src="user?.profile_image_url" class="border border-3 rounded-circle" width="100" height="100">
