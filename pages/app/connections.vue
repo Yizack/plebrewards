@@ -64,7 +64,7 @@ const linkSpotify = async () => {
                 </div>
               </div>
               <div class="d-grid">
-                <NuxtLink type="submit" class="btn btn-lg btn-secondary mt-2 rounded-pill" to="/docs/connections/spotify">Learn how to create your app</NuxtLink>
+                <a type="submit" class="btn btn-lg btn-secondary mt-2 rounded-pill" href="/docs/connections/spotify">Learn how to create your app</a>
                 <button type="submit" :class="`btn btn-lg ${spotifyConnection ? 'btn-danger' : 'btn-primary'} mt-2 rounded-pill`" :disabled="loading">
                   <Transition name="slide" mode="out-in">
                     <SpinnerCircle v-if="loading" />
