@@ -55,6 +55,11 @@ export default defineNuxtConfig({
     url: SITE.url.prod
   },
   nitro: {
+    imports: {
+      dirs: [
+        "server/utils/rewards/**"
+      ]
+    },
     cloudflare: {
       pages: {
         routes: {

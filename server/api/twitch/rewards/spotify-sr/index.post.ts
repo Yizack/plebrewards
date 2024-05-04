@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const webhook = await twitchAPI.subscribeToWebhook(session.user.id, rewards.data[0].id, config.twitch.webhookSecret);
+  const webhook = await twitchAPI.subscribeToWebhook("spotify-sr", session.user.id, rewards.data[0].id, config.twitch.webhookSecret);
   if (!webhook) throw createError({ statusCode: ErrorCode.INTERNAL_SERVER_ERROR, message: "Failed to subscribe to reward webhook. Please try again." });
 
   return webhook;

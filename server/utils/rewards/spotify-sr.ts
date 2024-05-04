@@ -1,21 +1,8 @@
 import { eq, sql } from "drizzle-orm";
+import type { H3Event } from "h3";
 
-export default defineEventHandler(async (event) => {
-  const headers = getHeaders(event);
-  const rawBody = await readRawBody(event);
-  const body = await readBody<TwitchWebhookPost>(event);
-
-  if (!rawBody) throw createError({ statusCode: ErrorCode.BAD_REQUEST, message: "No body provided" });
-
-  const MESSAGE_TYPE = "Twitch-Eventsub-Message-Type".toLowerCase();
-  const MESSAGE_TYPE_VERIFICATION = "webhook_callback_verification";
-
-  if (headers[MESSAGE_TYPE] === MESSAGE_TYPE_VERIFICATION) return body.challenge;
-
+export const rewardSpotifySR = async (event: H3Event, body: TwitchWebhookPost) => {
   const config = useRuntimeConfig(event);
-  const isvalidWebhook = await Twitch.isValidWebhook(headers, rawBody, config.twitch.webhookSecret);
-
-  if (!isvalidWebhook || !body.event) throw createError({ statusCode: ErrorCode.UNAUTHORIZED, message: "Invalid webhook" });
 
   const webhookEvent = body.event;
   const user_input = webhookEvent.user_input.trim();
@@ -103,5 +90,4 @@ export default defineEventHandler(async (event) => {
   }
 
   await twitchAPI.sendChatMessage(webhookEvent.broadcaster_user_id, `💿 "${track.artists} - ${track.name}" requested by @${webhookEvent.user_login} has been added to the queue.`);
-  return body;
-});
+};

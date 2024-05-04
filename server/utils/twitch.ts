@@ -92,7 +92,7 @@ class Twitch {
     return subscriptions ? subscriptions.data : [];
   }
 
-  async subscribeToWebhook (broadcaster_id: string, reward_id: string, secret: string) {
+  async subscribeToWebhook (webhook: string, broadcaster_id: string, reward_id: string, secret: string) {
     const response = await $fetch<TwitchWebhooksResponse>(`${baseURL}/eventsub/subscriptions`, {
       method: "POST",
       headers: {
@@ -108,7 +108,7 @@ class Twitch {
         },
         transport: {
           method: "webhook",
-          callback: (import.meta.dev ? SITE.url.tunnel : SITE.url.prod) + "/api/webhooks/twitch",
+          callback: (import.meta.dev ? SITE.url.tunnel : SITE.url.prod) + `/api/webhooks/${webhook}`,
           secret: secret
         }
       }

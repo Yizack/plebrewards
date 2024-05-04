@@ -37,7 +37,7 @@ declare global {
   }
   interface TwitchWebhookPost {
     subscription: TwitchWebhooksResponse["data"][0],
-    event?: {
+    event: {
       broadcaster_user_id: string;
       broadcaster_user_login: string;
       broadcaster_user_name: string;

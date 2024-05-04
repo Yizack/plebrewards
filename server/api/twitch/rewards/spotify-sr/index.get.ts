@@ -24,7 +24,8 @@ export default defineEventHandler(async (event) => {
 
   return webhooks.map((webhook) => {
     const reward = rewards.find((reward) => reward.id === webhook.condition.reward_id);
-    if (!reward || !webhook.transport.callback.includes("/api/webhooks/twitch")) return undefined;
+    const isReward = webhook.transport.callback.includes("/api/webhooks/spotify-sr") || webhook.transport.callback.includes("/api/webhooks/twitch");
+    if (!reward || !isReward) return undefined;
 
     return {
       id: webhook.id,
