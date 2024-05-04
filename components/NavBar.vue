@@ -20,13 +20,13 @@ onMounted(() => {
 </script>
 
 <template>
-  <nav class="navbar bg-body-tertiary sticky-top">
+  <nav class="navbar bg-body-tertiary sticky-top border-bottom">
     <div class="container-fluid">
       <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbar" aria-controls="navbar" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon" />
       </button>
       <NuxtLink class="navbar-brand d-lg-none" to="/">{{ SITE.name }}</NuxtLink>
-      <div id="navbar" ref="navbar" class="offcanvas offcanvas-start w-lg-100 show" tabindex="-1" aria-labelledby="navbarLabel" data-bs-scroll="true" data-bs-backdrop="false">
+      <div id="navbar" ref="navbar" class="offcanvas offcanvas-start w-lg-100 show bg-body-tertiary" tabindex="-1" aria-labelledby="navbarLabel" data-bs-scroll="true" data-bs-backdrop="false">
         <div class="offcanvas-header">
           <h5 id="navbarLabel" class="offcanvas-title">{{ SITE.name }}</h5>
           <button type="button" class="btn-close d-lg-none" data-bs-dismiss="offcanvas" aria-label="Close" />
