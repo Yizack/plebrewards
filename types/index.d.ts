@@ -6,6 +6,19 @@ declare global {
     success: boolean;
     id?: number;
   }
+  interface Rewards {
+    id: string;
+    transport: {
+      method: string;
+      callback: string;
+    },
+    reward: {
+      id: string;
+      title: string;
+      description: string;
+      cost: number;
+    }
+  }
   type ErrorCode = typeof ErrorCode;
 }
 

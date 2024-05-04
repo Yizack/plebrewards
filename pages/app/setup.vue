@@ -1,9 +1,9 @@
 <script setup lang="ts">
 definePageMeta({ layout: "app", middleware: "session" });
 
-const { data: webhooks } = await useFetch("/api/twitch/rewards/spotify-sr");
+const { data: service } = await useFetch("/api/twitch/rewards/spotify-sr");
 
-const webhook = ref(webhooks.value ? webhooks.value[0] : null);
+const webhook = ref(service.value?.rewards ? service.value?.rewards[0] : null);
 const loading = ref(false);
 const { $toasts } = useNuxtApp();
 
@@ -71,12 +71,16 @@ const deleteReward = async (id_webhook: string, id_reward: string) => {
                 <textarea id="title" v-model="form.description" type="text" class="form-control" placeholder="Description" maxlength="200" style="height: 150px;" />
                 <label for="client">Description</label>
               </div>
-              <div class="form-floating">
+              <div class="form-floating mb-2">
                 <input id="cost" v-model="form.cost" type="number" class="form-control" placeholder="Points cost" required>
                 <label for="secret">Points cost</label>
               </div>
+              <div v-if="!service?.connected" class="alert alert-dark d-flex align-items-center" role="alert">
+                <Icon class="bi flex-shrink-0 me-2" name="solar:danger-triangle-bold" role="img" aria-label="Warning:" size="1.3rem" />
+                <div>Please <NuxtLink to="/app/connections">Connect your Spotify App</NuxtLink> before creating a reward</div>
+              </div>
               <div class="d-grid">
-                <button type="submit" :class="`btn btn-lg ${webhook ? 'btn-danger' : 'btn-primary'} mt-2 rounded-pill`" :disabled="loading">
+                <button type="submit" :class="`btn btn-lg ${webhook ? 'btn-danger' : 'btn-primary'} mt-2 rounded-pill`" :disabled="loading || !service?.connected">
                   <Transition name="slide" mode="out-in">
                     <SpinnerCircle v-if="loading" />
                     <span v-else>{{ webhook ? 'Delete reward' : 'Create reward'}}</span>

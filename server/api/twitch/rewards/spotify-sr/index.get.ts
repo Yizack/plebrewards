@@ -1,6 +1,18 @@
+import { eq, and } from "drizzle-orm";
+
 export default defineEventHandler(async (event) => {
   const session = await requireUserSession(event);
   const config = useRuntimeConfig(event);
+  const output: { connected: boolean, rewards: Rewards[] } = { connected: false, rewards: [] };
+
+  const DB = useDB();
+  const connection = await DB.select({
+    type: tables.connections.type
+  }).from(tables.connections).where(and(eq(tables.connections.id_user, Number(session.user.id)), eq(tables.connections.type, "spotify"))).get();
+
+  if (!connection) return output;
+
+  output.connected = true;
 
   const twitchAPI = new Twitch({
     client: config.oauth.twitch.clientId,
@@ -12,7 +24,7 @@ export default defineEventHandler(async (event) => {
   if (!accessResponse) throw createError({ statusCode: ErrorCode.INTERNAL_SERVER_ERROR, message: "An error occurred. Please try again." });
 
   const webhooks = await twitchAPI.getWebhooks(session.user.id);
-  if (!webhooks.length) return [];
+  if (!webhooks.length) return output;
 
   if (Twitch.isAccessTokenExpired(session.user.tokens.expires_at)) {
     await updateTwitchRefreshToken(event, twitchAPI, session.user);
@@ -20,9 +32,9 @@ export default defineEventHandler(async (event) => {
 
   const rewards = await twitchAPI.getCustomRewards(session.user.id);
 
-  if (!rewards.length) return [];
+  if (!rewards.length) return output;
 
-  return webhooks.map((webhook) => {
+  output.rewards = webhooks.map((webhook) => {
     const reward = rewards.find((reward) => reward.id === webhook.condition.reward_id);
     const isReward = webhook.transport.callback.includes("/api/webhooks/spotify-sr") || webhook.transport.callback.includes("/api/webhooks/twitch");
     if (!reward || !isReward) return undefined;
@@ -40,5 +52,7 @@ export default defineEventHandler(async (event) => {
         cost: reward.cost
       }
     };
-  }).filter((webhook) => webhook !== undefined);
+  }).filter((webhook) => webhook !== undefined) as Rewards[];
+
+  return output;
 });
