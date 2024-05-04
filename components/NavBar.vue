@@ -33,19 +33,33 @@ onMounted(() => {
         </div>
         <div class="offcanvas-body d-flex flex-column justify-content-between">
           <ul class="navbar-nav flex-grow-1 gap-1">
-            <li class="nav-item">
-              <NuxtLink class="nav-link active" aria-current="page" to="/app">Home</NuxtLink>
+            <li class="nav-item ">
+              <NuxtLink class="nav-link d-flex align-items-center gap-2" aria-current="page" to="/app">
+                <Icon name="solar:smile-circle-bold" size="1.3rem" />
+                <span>Home</span>
+              </NuxtLink>
             </li>
             <li class="nav-item">
-              <NuxtLink class="nav-link active" aria-current="page" to="/app/connections">Connections</NuxtLink>
+              <NuxtLink class="nav-link d-flex align-items-center gap-2" aria-current="page" to="/app/connections">
+                <Icon name="solar:link-round-angle-bold" size="1.3rem" />
+                <span>Connections</span>
+              </NuxtLink>
             </li>
             <li class="nav-item">
-              <NuxtLink class="nav-link active" aria-current="page" to="/app/setup">Setup</NuxtLink>
+              <NuxtLink class="nav-link d-flex align-items-center gap-2" aria-current="page" to="/app/setup">
+                <Icon name="solar:star-bold" size="1.3rem" />
+                <span>Setup</span>
+              </NuxtLink>
             </li>
           </ul>
           <div>
             <div class="d-grid">
-              <button class="btn btn-primary rounded-pill" @click="logout">Logout</button>
+              <button class="btn btn-danger rounded-pill" @click="logout">
+                <span class="position-relative">
+                  <Icon name="solar:bell-off-bold" class="position-absolute end-100 top-50 translate-middle" size="1.3rem" />
+                  Logout
+                </span>
+              </button>
             </div>
           </div>
         </div>

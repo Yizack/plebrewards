@@ -43,8 +43,8 @@ const linkSpotify = async () => {
               <Icon name="bi:spotify" size="2em" />
               <h2 class="m-0">Spotify</h2>
             </div>
-            <div :class="`d-flex gap-2 justify-content-center align-items-center position-absolute top-0 end-0 m-2 px-3 py-1 rounded-pill small text-white ${spotifyConnection ? 'bg-success' : 'bg-secondary'}`">
-              <Icon name="solar:link-round-angle-bold-duotone" size="1rem" />
+            <div :class="`d-flex gap-2 justify-content-center align-items-center position-absolute top-0 end-0 m-2 px-3 py-1 rounded-pill small   ${spotifyConnection ? 'bg-success' : 'bg-secondary'}`">
+              <Icon name="solar:link-round-angle-bold" size="1.2rem" />
               <span v-if="spotifyConnection" class="d-none d-lg-block">Linked</span>
               <span v-else class="d-none d-lg-block">Not connected</span>
             </div>
@@ -63,7 +63,10 @@ const linkSpotify = async () => {
               <button type="submit" :class="`btn btn-lg ${spotifyConnection ? 'btn-danger' : 'btn-primary'} mt-2 rounded-pill`" :disabled="loading">
                 <Transition name="slide" mode="out-in">
                   <SpinnerCircle v-if="loading" />
-                  <span v-else>{{ spotifyConnection ? "Unlink" : "Link" }}</span>
+                  <span v-else class="d-flex align-items-center justify-content-center gap-2">
+                    <Icon name="solar:link-broken-minimalistic-bold" size="1.3rem" />
+                    {{ spotifyConnection ? "Unlink" : "Link" }}
+                  </span>
                 </Transition>
               </button>
             </div>

@@ -3,4 +3,8 @@
   --bs-primary-rgb: 110, 168, 254;
   --bs-primary-hover: #5e9cfa;
   --bs-primary-hover-rgb: 94, 156, 250;
+  --bs-danger: #ea868f;
+  --bs-danger-rgb: 234, 134, 143;
+  --bs-danger-hover: #e97781;
+  --bs-danger-hover-rgb: 233, 119, 129;
 }

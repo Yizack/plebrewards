@@ -54,7 +54,7 @@ const deleteReward = async (id_webhook: string, id_reward: string) => {
         <div class="rounded p-4 bg-body-secondary position-relative">
           <form @submit.prevent="webhook ? deleteReward(webhook.id, webhook.reward.id) : createReward()">
             <div :class="`d-flex gap-1 justify-content-center align-items-center position-absolute top-0 end-0 m-2 px-3 py-1 rounded-pill small text-white ${webhook ? 'bg-success' : 'bg-secondary'}`">
-              <Icon name="solar:record-bold-duotone" size="1rem" />
+              <Icon name="solar:record-bold-duotone" size="1.2rem" />
               <span v-if="webhook" class="d-none d-lg-block">Created</span>
               <span v-else class="d-none d-lg-block">Not created</span>
             </div>
