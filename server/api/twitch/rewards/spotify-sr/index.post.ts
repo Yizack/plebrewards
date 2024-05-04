@@ -13,13 +13,8 @@ export default defineEventHandler(async (event) => {
     await updateTwitchRefreshToken(event, twitchAPI, session.user);
   }
 
-  const rewards = await twitchAPI.createCustomReward(session.user.id, body.title.toString(), body.description.toString(), Number(body.cost)).catch(() => null);
-  if (!rewards) {
-    throw createError({
-      statusCode: ErrorCode.BAD_REQUEST,
-      message: "Failed to create reward"
-    });
-  }
+  const rewards = await twitchAPI.createCustomReward(session.user.id, body.title.toString(), body.description.toString(), Number(body.cost));
+  if (!rewards) throw createError({ statusCode: ErrorCode.BAD_REQUEST, message: "Failed to create reward" });
 
   const accessResponse = await twitchAPI.getAppAccessToken();
 
@@ -31,6 +26,7 @@ export default defineEventHandler(async (event) => {
   }
 
   const webhook = await twitchAPI.subscribeToWebhook(session.user.id, rewards.data[0].id, config.twitch.webhookSecret);
+  if (!webhook) throw createError({ statusCode: ErrorCode.INTERNAL_SERVER_ERROR, message: "Failed to subscribe to reward webhook. Please try again." });
 
   return webhook;
 });

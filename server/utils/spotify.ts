@@ -14,18 +14,6 @@ class Spotify {
     this.secret = options.secret;
   }
 
-  getCurrentUser (user_access_token: string) {
-    const url = `${baseURL}/me`;
-    return $fetch(url, {
-      method: "GET",
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-        "Authorization": "Bearer " + user_access_token
-      }
-    });
-  }
-
   static authorize (event: H3Event, options: SpotifyAuthorize) {
     const params = new URLSearchParams({
       response_type: options.response_type,
@@ -37,14 +25,15 @@ class Spotify {
     return sendRedirect(event, `${baseAuthURL}/authorize?${params.toString()}`);
   }
 
-  oauthCallback (query_code: string, redirect_uri: string) {
-    return $fetch<SpotifyTokenResponse>(`${baseAuthURL}/api/token?&code=${query_code}&grant_type=authorization_code&redirect_uri=${redirect_uri}`, {
+  async oauthCallback (query_code: string, redirect_uri: string) {
+    const response = await $fetch<SpotifyTokenResponse>(`${baseAuthURL}/api/token?&code=${query_code}&grant_type=authorization_code&redirect_uri=${redirect_uri}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
         "Authorization": `Basic ${btoa(`${this.client}:${this.secret}`)}`
       },
-    });
+    }).catch(() => null);
+    return response;
   }
 
   async refreshToken (refresh_token?: string | null) {
@@ -60,19 +49,20 @@ class Spotify {
     return response;
   }
 
-  searchTrack (options: SpotifySearchOptions) {
+  async searchTrack (options: SpotifySearchOptions) {
     const params = new URLSearchParams({
       q: options.q,
       type: "track",
       limit: options.limit?.toString() || "1"
     });
 
-    return $fetch<SpotifyTrackSearchResponse>(`${baseURL}/search?${params.toString()}`, {
+    const response = await $fetch<SpotifyTrackSearchResponse>(`${baseURL}/search?${params.toString()}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${this.access_token}`
       }
-    });
+    }).catch(() => null);
+    return response;
   }
 
   async addToQueue (trackId: string) {
@@ -95,13 +85,14 @@ class Spotify {
     return parts[parts.length - 1];
   }
 
-  getTrack (trackId: string) {
-    return $fetch<SpotifyTrackSearchResponse["tracks"]["items"][0]>(`${baseURL}/tracks/${trackId}`, {
+  async getTrack (trackId: string) {
+    const response = await $fetch<SpotifyTrackSearchResponse["tracks"]["items"][0]>(`${baseURL}/tracks/${trackId}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${this.access_token}`
       }
-    });
+    }).catch(() => null);
+    return response;
   }
 }
 

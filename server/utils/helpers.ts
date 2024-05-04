@@ -9,7 +9,10 @@ export const updateTwitchRefreshToken = async (event: H3Event, twitchAPI: Instan
   if (!refreshResponse) throw createError({ statusCode: ErrorCode.INTERNAL_SERVER_ERROR, message: "An error occurred. Please try again." });
   if (refreshResponse.refresh_token !== user.tokens.refresh_token) {
     const DB = useDB();
-    await DB.update(tables.users).set({ refresh_token: refreshResponse.refresh_token }).where(eq(tables.users.id_user, Number(user.id))).run();
+    await DB.update(tables.users).set({
+      refresh_token: refreshResponse.refresh_token,
+      updated_at: Date.now()
+    }).where(eq(tables.users.id_user, Number(user.id))).run();
     await setUserSession(event, { user: { ...user, tokens: { ...user.tokens, refresh_token: refreshResponse.refresh_token } } });
   }
 };

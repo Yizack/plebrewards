@@ -43,8 +43,8 @@ class Twitch {
     return response;
   }
 
-  createCustomReward (broadcaster_id: string, title: string, description: string, cost: number) {
-    return $fetch<TwitchRewardResponse>(`${baseURL}/channel_points/custom_rewards?broadcaster_id=${broadcaster_id}`, {
+  async createCustomReward (broadcaster_id: string, title: string, description: string, cost: number) {
+    const response = await $fetch<TwitchRewardResponse>(`${baseURL}/channel_points/custom_rewards?broadcaster_id=${broadcaster_id}`, {
       method: "POST",
       headers: {
         "client-id": this.client,
@@ -58,7 +58,8 @@ class Twitch {
         background_color: "#1ED760",
         description: description
       }
-    });
+    }).catch(() => null);
+    return response;
   }
 
   async getCustomRewards(broadcaster_id: string) {
@@ -68,8 +69,7 @@ class Twitch {
         "Authorization": `Bearer ${this.access_token}`
       }
     }).catch(() => null);
-    if (!rewards) return [];
-    return rewards.data;
+    return rewards ? rewards.data : [];
   }
 
   async deleteCustomReward (broadcaster_id: string, reward_id: string) {
@@ -89,13 +89,11 @@ class Twitch {
         "Authorization": `Bearer ${this.app_access_token}`
       }
     }).catch(() => null);
-
-    if (!subscriptions) return [];
-    return subscriptions.data;
+    return subscriptions ? subscriptions.data : [];
   }
 
-  subscribeToWebhook (broadcaster_id: string, reward_id: string, secret: string) {
-    return $fetch<TwitchWebhooksResponse>(`${baseURL}/eventsub/subscriptions`, {
+  async subscribeToWebhook (broadcaster_id: string, reward_id: string, secret: string) {
+    const response = await $fetch<TwitchWebhooksResponse>(`${baseURL}/eventsub/subscriptions`, {
       method: "POST",
       headers: {
         "client-id": this.client,
@@ -114,7 +112,8 @@ class Twitch {
           secret: secret
         }
       }
-    });
+    }).catch(() => null);
+    return response;
   }
 
   async deleteWebhook (id: string) {
@@ -150,7 +149,7 @@ class Twitch {
     return hmac === message_signature;
   }
 
-  sendChatMessage (broadcaster_id: string, message: string) {
+  async sendChatMessage (broadcaster_id: string, message: string) {
     return $fetch(`${baseURL}/chat/messages`, {
       method: "POST",
       headers: {
@@ -162,10 +161,10 @@ class Twitch {
         sender_id: broadcaster_id,
         message: message
       }
-    });
+    }).then(() => true).catch(() => false);
   }
 
-  updateRedemption (id: string, broadcaster_id: string, reward_id: string, status: "FULFILLED" | "CANCELED") {
+  async updateRedemption (id: string, broadcaster_id: string, reward_id: string, status: "FULFILLED" | "CANCELED") {
     return $fetch(`${baseURL}/channel_points/custom_rewards/redemptions?id=${id}&broadcaster_id=${broadcaster_id}&reward_id=${reward_id}`, {
       method: "PATCH",
       headers: {
@@ -175,7 +174,7 @@ class Twitch {
       body: {
         status: status
       }
-    });
+    }).then(() => true).catch(() => false);
   }
 
   static isAccessTokenExpired (expires_at: number) {

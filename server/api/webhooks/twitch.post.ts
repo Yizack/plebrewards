@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 
 export default defineEventHandler(async (event) => {
   const headers = getHeaders(event);
@@ -19,11 +19,19 @@ export default defineEventHandler(async (event) => {
 
   const webhookEvent = body.event;
   const DB = useDB();
-  const connection = await DB.select().from(tables.connections).where(eq(tables.connections.id_user, Number(webhookEvent.broadcaster_user_id))).get();
+  const today = Date.now();
+
+  const connection = await DB.select({
+    client_id: tables.connections.client_id,
+    client_secret: tables.connections.client_secret,
+    refresh_token: tables.connections.refresh_token,
+    user_refresh_token: sql<string>`users.refresh_token`.as("user_refresh_token"),
+  }).from(tables.connections).leftJoin(tables.users, eq(tables.connections.id_user, tables.users.id_user)).where(eq(tables.connections.id_user, Number(webhookEvent.broadcaster_user_id))).get();
+  if (!connection) throw createError({ statusCode: ErrorCode.NOT_FOUND, message: "No connection found" });
 
   const spotifyAPI = new Spotify({
-    client: connection?.client_id,
-    secret: connection?.client_secret
+    client: connection.client_id,
+    secret: connection.client_secret
   });
 
   const twitchAPI = new Twitch({
@@ -31,25 +39,22 @@ export default defineEventHandler(async (event) => {
     secret: config.oauth.twitch.clientSecret
   });
 
-  const spotifyTokens = await spotifyAPI.refreshToken(connection?.refresh_token);
-
+  const spotifyTokens = await spotifyAPI.refreshToken(connection.refresh_token);
   if (!spotifyTokens) throw createError({ statusCode: ErrorCode.BAD_REQUEST, message: "Failed to get Spotify access token" });
-
-  if (spotifyTokens.refresh_token !== connection?.refresh_token) {
-    await DB.update(tables.users).set({ refresh_token: spotifyTokens.refresh_token }).where(eq(tables.users.id_user, Number(webhookEvent.broadcaster_user_id))).run();
+  if (spotifyTokens.refresh_token !== connection.refresh_token) {
+    await DB.update(tables.users).set({
+      refresh_token: spotifyTokens.refresh_token,
+      updated_at: today
+    }).where(eq(tables.users.id_user, Number(webhookEvent.broadcaster_user_id))).run();
   }
 
-  const isURL = Spotify.isValidTrackURL(webhookEvent.user_input);
-  const user = await DB.select({
-    refresh_token: tables.users.refresh_token
-  }).from(tables.users).where(eq(tables.users.id_user, Number(webhookEvent.broadcaster_user_id))).get();
-
-  const twitchTokens = await twitchAPI.refreshToken(user?.refresh_token);
-
+  const twitchTokens = await twitchAPI.refreshToken(connection.user_refresh_token);
   if (!twitchTokens) throw createError({ statusCode: ErrorCode.BAD_REQUEST, message: "Failed to get Twitch access token" });
-
-  if (twitchTokens.refresh_token !== user?.refresh_token) {
-    await DB.update(tables.users).set({ refresh_token: twitchTokens.refresh_token }).where(eq(tables.users.id_user, Number(webhookEvent.broadcaster_user_id))).run();
+  if (twitchTokens.refresh_token !== connection.user_refresh_token) {
+    await DB.update(tables.users).set({
+      refresh_token: twitchTokens.refresh_token,
+      updated_at: today
+    }).where(eq(tables.users.id_user, Number(webhookEvent.broadcaster_user_id))).run();
   }
 
   setResponseStatus(event, 204);
@@ -60,11 +65,11 @@ export default defineEventHandler(async (event) => {
     id: ""
   };
 
-  if (!isURL) {
+  if (!Spotify.isValidTrackURL(webhookEvent.user_input)) {
     const search = await spotifyAPI.searchTrack({
       q: webhookEvent.user_input,
       limit: 1
-    }).catch(() => null);
+    });
 
     if (!search || !search.tracks.items.length) {
       console.info("No tracks found");
@@ -80,7 +85,7 @@ export default defineEventHandler(async (event) => {
   }
   else {
     track.id = Spotify.getTrackIdFromURL(webhookEvent.user_input);
-    const trackResponse = await spotifyAPI.getTrack(track.id).catch(() => null);
+    const trackResponse = await spotifyAPI.getTrack(track.id);
     if (trackResponse) {
       track.name = trackResponse.name;
       track.artists = trackResponse.artists.map((artist) => artist.name).join(", ");

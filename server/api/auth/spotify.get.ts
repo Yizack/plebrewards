@@ -10,12 +10,16 @@ export default defineEventHandler(async (event) => {
       client_id: params.client.toString(),
       scope: scopes,
       redirect_uri: redirect
-    }).catch(() => null);
+    });
   }
 
   const session = await requireUserSession(event);
   const DB = useDB();
-  const credentials = await DB.select().from(tables.connections).where(and(
+  const credentials = await DB.select({
+    client_id: tables.connections.client_id,
+    client_secret: tables.connections.client_secret,
+    id_user: tables.connections.id_user
+  }).from(tables.connections).where(and(
     eq(tables.connections.type, "spotify"),
     eq(tables.connections.id_user, Number(session.user.id))
   )).get();
@@ -29,12 +33,13 @@ export default defineEventHandler(async (event) => {
 
   if (!params.code) throw createError({ statusCode: 400, message: "No code provided" });
 
-  const response = await spotifyAPI.oauthCallback(params.code.toString(), redirect).catch(() => null);
+  const oauth = await spotifyAPI.oauthCallback(params.code.toString(), redirect);
 
-  if (!response) throw createError({ statusCode: 500, message: "Failed to authenticate with Spotify App" });
+  if (!oauth) throw createError({ statusCode: 500, message: "Failed to authenticate with Spotify App" });
 
   const connection = await DB.update(tables.connections).set({
-    refresh_token: response.refresh_token
+    refresh_token: oauth.refresh_token,
+    updated_at: Date.now()
   }).where(eq(tables.connections.id_user, credentials.id_user)).returning().get();
 
   if (!connection) throw createError({ statusCode: 500, message: "Failed to update connection" });
