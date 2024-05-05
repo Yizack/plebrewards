@@ -49,7 +49,8 @@ export default defineEventHandler(async (event) => {
         id: reward.id,
         title: reward.title,
         description: reward.prompt,
-        cost: reward.cost
+        cost: reward.cost,
+        color: reward.background_color
       }
     };
   }).filter((webhook) => webhook !== undefined) as Rewards[];
