@@ -7,4 +7,8 @@
   --bs-danger-rgb: 234, 134, 143;
   --bs-danger-hover: #e97781;
   --bs-danger-hover-rgb: 233, 119, 129;
+  --bs-twitch: #9146ff;
+  --bs-twitch-rgb: 145, 70, 255;
+  --bs-twitch-hover: #8b41fa;
+  --bs-twitch-hover-rgb: 139, 65, 250;
 }

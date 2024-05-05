@@ -29,3 +29,17 @@
   --bs-btn-disabled-bg: var(--bs-danger);
   --bs-btn-disabled-border-color: var(--bs-danger);
 }
+
+.btn-twitch {
+  --bs-btn-color: var(--bs-body-text);
+  --bs-btn-hover-color: var(--bs-body-text);
+  --bs-btn-bg: var(--bs-twitch);
+  --bs-btn-border-color: var(--bs-twitch);
+  --bs-btn-hover-bg: var(--bs-twitch-hover);
+  --bs-btn-hover-border-color: var(--bs-twitch-hover);
+  --bs-btn-active-color: var(--bs-body-text);
+  --bs-btn-active-bg: var(--bs-twitch-hover);
+  --bs-btn-active-border-color: var(--bs-twitch-hover);
+  --bs-btn-disabled-bg: var(--bs-twitch);
+  --bs-btn-disabled-border-color: var(--bs-twitch);
+}
