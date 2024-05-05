@@ -54,7 +54,7 @@ onMounted(() => {
           </ul>
           <div>
             <div class="d-grid">
-              <button class="btn btn-danger rounded-pill" @click="logout">
+              <button class="btn btn-danger rounded-4" @click="logout">
                 <span class="position-relative">
                   <Icon name="solar:bell-off-bold" class="position-absolute end-100 top-50 translate-middle" size="1.3rem" />
                   Logout
@@ -66,7 +66,7 @@ onMounted(() => {
       </div>
       <div class="ms-auto">
         <div class="">
-          <NuxtLink class="btn btn-primary rounded-pill d-flex align-items-center gap-1" to="/app">
+          <NuxtLink class="btn btn-primary rounded-4 d-flex align-items-center gap-1" to="/app">
             <img :src="user?.profile_image_url" class="border rounded-circle" width="30" height="30">
             <span>{{ user?.display_name }}</span>
           </NuxtLink>

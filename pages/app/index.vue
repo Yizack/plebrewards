@@ -9,7 +9,7 @@ const { data: connections } = await useFetch(`/api/user/${user.value?.id}/connec
     <h1 class="mb-4">Profile</h1>
     <div class="row flex-gap-1">
       <div class="col-lg-8">
-        <div class="rounded-3 p-4 bg-body-secondary border border-2">
+        <div class="rounded-4 p-4 bg-body-secondary border border-2">
           <div v-if="loggedIn">
             <div class="d-flex gap-2 align-items-center mb-3">
               <img :src="user?.profile_image_url" class="border border-3 rounded-circle" width="100" height="100">
@@ -18,7 +18,7 @@ const { data: connections } = await useFetch(`/api/user/${user.value?.id}/connec
                 <p class="m-0">@{{ user?.login }}</p>
               </div>
             </div>
-            <div class="bg-body p-3 rounded-3">
+            <div class="bg-body p-3 rounded-4">
               <div>
                 <span class="fw-medium text-uppercase">Joined</span>
                 <p>{{ new Date(Number(user?.created_at)).toLocaleDateString("en", { year: "numeric", month: "long", day: "numeric", weekday: "short" }) }}</p>

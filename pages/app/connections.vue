@@ -37,13 +37,13 @@ const linkSpotify = async () => {
     <h1 class="mb-4">Connections</h1>
     <div class="row flex-gap-1">
       <div class="col-lg-6">
-        <div class="rounded-3 p-4 bg-body-secondary border border-2 position-relative">
+        <div class="rounded-4 p-4 bg-body-secondary border border-2 position-relative">
           <form autocomplete="off" @submit.prevent="linkSpotify">
             <div class="d-flex gap-2 justify-content-center align-items-center mb-3">
               <Icon name="bi:spotify" size="2em" />
               <h2 class="m-0">Spotify</h2>
             </div>
-            <div :class="`d-flex gap-2 justify-content-center align-items-center position-absolute top-0 end-0 m-2 px-3 py-1 rounded-pill small   ${spotifyConnection ? 'bg-success' : 'bg-secondary'}`">
+            <div :class="`d-flex gap-2 justify-content-center align-items-center position-absolute top-0 end-0 m-2 px-3 py-1 rounded-4 small ${spotifyConnection ? 'bg-success' : 'bg-secondary'}`">
               <Icon name="solar:link-round-angle-bold" size="1.2rem" />
               <span v-if="spotifyConnection" class="d-none d-lg-block">Linked</span>
               <span v-else class="d-none d-lg-block">Not connected</span>
@@ -59,8 +59,8 @@ const linkSpotify = async () => {
               </div>
             </div>
             <div class="d-grid">
-              <a type="submit" class="btn btn-lg btn-secondary mt-2 rounded-pill" href="/docs/connections/spotify" target="_blank">Learn how to create your app</a>
-              <button type="submit" :class="`btn btn-lg ${spotifyConnection ? 'btn-danger' : 'btn-primary'} mt-2 rounded-pill`" :disabled="loading">
+              <a type="submit" class="btn btn-lg btn-secondary mt-2 rounded-4" href="/docs/connections/spotify" target="_blank">Learn how to create your app</a>
+              <button type="submit" :class="`btn btn-lg ${spotifyConnection ? 'btn-danger' : 'btn-primary'} mt-2 rounded-4`" :disabled="loading">
                 <Transition name="slide" mode="out-in">
                   <SpinnerCircle v-if="loading" />
                   <span v-else class="d-flex align-items-center justify-content-center gap-2">

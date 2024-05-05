@@ -15,7 +15,7 @@ nav.navbar * {
 .navbar-nav .nav-item .nav-link {
   padding-left: 1rem;
   padding-right: 1rem;
-  border-radius: var(--bs-border-radius-pill);
+  border-radius: var(--bs-border-radius-xl);
   color: var(--bs-body-color);
 }
 
