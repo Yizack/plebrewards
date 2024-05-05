@@ -84,7 +84,9 @@ const deleteReward = async (id_webhook: string, id_reward: string) => {
               <label for="client">Description</label>
             </div>
             <div class="input-group mb-2">
-              <span class="input-group-text"><IconsReward size="1.4rem" /></span>
+              <span class="input-group-text text-body-emphasis" :style="{ backgroundColor: form.color }">
+                <IconsReward size="1.4rem" />
+              </span>
               <div class="form-floating">
                 <input id="cost" v-model="form.cost" type="number" class="form-control" placeholder="Cost" required>
                 <label for="cost">Cost</label>
