@@ -64,7 +64,7 @@ const linkSpotify = async () => {
                 <Transition name="slide" mode="out-in">
                   <SpinnerCircle v-if="loading" />
                   <span v-else class="d-flex align-items-center justify-content-center gap-2">
-                    <Icon name="solar:link-broken-minimalistic-bold" size="1.3rem" />
+                    <Icon :name="spotifyConnection ? 'solar:link-broken-minimalistic-bold' : 'solar:link-minimalistic-2-bold'" size="1.3rem" />
                     {{ spotifyConnection ? "Unlink" : "Link" }}
                   </span>
                 </Transition>

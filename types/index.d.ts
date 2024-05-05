@@ -17,6 +17,7 @@ declare global {
       title: string;
       description: string;
       cost: number;
+      color: string;
     }
   }
   type ErrorCode = typeof ErrorCode;

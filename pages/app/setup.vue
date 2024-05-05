@@ -7,11 +7,19 @@ const webhook = ref(service.value?.rewards ? service.value?.rewards[0] : null);
 const loading = ref(false);
 const { $toasts } = useNuxtApp();
 
-const form = ref({
-  title: webhook.value ? webhook.value.reward.title : "",
-  description: webhook.value ? webhook.value.reward.description : "",
-  cost: webhook.value ? webhook.value.reward.cost : null,
+const { form, formReset } = useFormState({
+  title: "",
+  description: "",
+  cost: null as number | null,
+  color: "#1ED760"
 });
+
+if (webhook.value) {
+  form.value.title = webhook.value.reward.title;
+  form.value.description = webhook.value.reward.description;
+  form.value.cost = webhook.value.reward.cost;
+  form.value.color = webhook.value.reward.color;
+}
 
 const createReward = async () => {
   loading.value = true;
@@ -20,6 +28,7 @@ const createReward = async () => {
     body: form.value
   }).catch(() => null);
   loading.value = false;
+
   if (!newWebhook) return;
   $toasts.add({ message: "Reward added to your Twitch channel", success: true });
   webhook.value = {
@@ -28,8 +37,9 @@ const createReward = async () => {
     reward: {
       id: newWebhook.data[0].condition.reward_id,
       title: form.value.title,
-      description: form.value.description || "",
-      cost: form.value.cost || 0
+      description: form.value.description,
+      cost: Number(form.value.cost),
+      color: form.value.color
     }
   };
 };
@@ -42,6 +52,7 @@ const deleteReward = async (id_webhook: string, id_reward: string) => {
   loading.value = false;
   if (!remove) return;
   $toasts.add({ message: "Reward deleted from your Twitch channel", success: true });
+  formReset();
   webhook.value = null;
 };
 </script>
@@ -63,16 +74,24 @@ const deleteReward = async (id_webhook: string, id_reward: string) => {
               <h2 class="m-0">Spotify SR</h2>
             </div>
             <div class="form-floating mb-2">
-              <input id="title" v-model="form.title" type="text" class="form-control" placeholder="Title" required>
+              <InputLeft max="45" :text="form.title" class="position-absolute top-0 end-0 px-2 pt-1" />
+              <input id="title" v-model="form.title" type="text" class="form-control" placeholder="Title" maxlength="45" required>
               <label for="client">Title</label>
             </div>
             <div class="form-floating mb-2">
-              <textarea id="title" v-model="form.description" type="text" class="form-control" placeholder="Description" maxlength="200" style="height: 150px;" />
+              <InputLeft max="200" :text="form.description" class="position-absolute top-0 end-0 px-2 pt-1" />
+              <textarea id="description" v-model="form.description" type="text" class="form-control" placeholder="Description" maxlength="200" style="height: 150px;" />
               <label for="client">Description</label>
             </div>
-            <div class="form-floating mb-2">
-              <input id="cost" v-model="form.cost" type="number" class="form-control" placeholder="Points cost" required>
-              <label for="secret">Points cost</label>
+            <div class="input-group mb-2">
+              <span class="input-group-text"><IconsReward size="1.4rem" /></span>
+              <div class="form-floating">
+                <input id="cost" v-model="form.cost" type="number" class="form-control" placeholder="Cost" required>
+                <label for="secret">Cost</label>
+              </div>
+            </div>
+            <div class="mb-2">
+              <input id="color" v-model="form.color" type="color" class="form-control form-control-color" title="Choose your color">
             </div>
             <div v-if="!service?.connected" class="alert alert-dark d-flex align-items-center" role="alert">
               <Icon class="bi flex-shrink-0 me-2" name="solar:danger-triangle-bold" role="img" aria-label="Warning:" size="1.3rem" />

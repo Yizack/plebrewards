@@ -43,7 +43,8 @@ class Twitch {
     return response;
   }
 
-  async createCustomReward (broadcaster_id: string, title: string, description: string, cost: number) {
+  async createCustomReward (options: { broadcaster_id: string, title: string, description: string, cost: number, color?: string }) {
+    const { broadcaster_id, title, description, cost, color } = options;
     const response = await $fetch<TwitchRewardResponse>(`${baseURL}/channel_points/custom_rewards?broadcaster_id=${broadcaster_id}`, {
       method: "POST",
       headers: {
@@ -55,8 +56,7 @@ class Twitch {
         prompt: description,
         cost,
         is_user_input_required: true,
-        background_color: "#1ED760",
-        description: description
+        background_color: color || "#1ED760"
       }
     }).catch(() => null);
     return response;
@@ -92,7 +92,8 @@ class Twitch {
     return subscriptions ? subscriptions.data : [];
   }
 
-  async subscribeToWebhook (webhook: string, broadcaster_id: string, reward_id: string, secret: string) {
+  async subscribeToWebhook (options: { webhook: string, broadcaster_id: string, reward_id: string, secret: string }) {
+    const { webhook, broadcaster_id, reward_id, secret } = options;
     const response = await $fetch<TwitchWebhooksResponse>(`${baseURL}/eventsub/subscriptions`, {
       method: "POST",
       headers: {

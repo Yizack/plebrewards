@@ -13,19 +13,24 @@ export default defineEventHandler(async (event) => {
     await updateTwitchRefreshToken(event, twitchAPI, session.user);
   }
 
-  const rewards = await twitchAPI.createCustomReward(session.user.id, body.title.toString(), body.description.toString(), Number(body.cost));
+  const rewards = await twitchAPI.createCustomReward({
+    broadcaster_id: session.user.id,
+    title: body.title.toString(),
+    description: body.description.toString(),
+    cost: Number(body.cost),
+    color: body.color?.toString()
+  });
   if (!rewards) throw createError({ statusCode: ErrorCode.BAD_REQUEST, message: "Failed to create reward" });
 
   const accessResponse = await twitchAPI.getAppAccessToken();
+  if (!accessResponse) throw createError({ statusCode: ErrorCode.BAD_REQUEST, message: "Failed to get app access token" });
 
-  if (!accessResponse) {
-    throw createError({
-      statusCode: ErrorCode.BAD_REQUEST,
-      message: "Failed to get app access token"
-    });
-  }
-
-  const webhook = await twitchAPI.subscribeToWebhook("spotify-sr", session.user.id, rewards.data[0].id, config.twitch.webhookSecret);
+  const webhook = await twitchAPI.subscribeToWebhook({
+    webhook: "spotify-sr",
+    broadcaster_id: session.user.id,
+    reward_id: rewards.data[0].id,
+    secret: config.twitch.webhookSecret
+  });
   if (!webhook) throw createError({ statusCode: ErrorCode.INTERNAL_SERVER_ERROR, message: "Failed to subscribe to reward webhook. Please try again." });
 
   return webhook;
