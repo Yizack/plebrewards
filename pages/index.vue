@@ -17,8 +17,8 @@ const login = async () => {
           </div>
           <div class="col-lg-6 p-4 p-lg-5">
             <h2 class="mb-4">Sign In</h2>
-            <button class="btn btn-lg btn-twitch rounded-4 w-100 mb-2 d-flex align-items-center justify-content-center gap-2" @click="login">
-              <Icon name="bi:twitch" class="flex-shrink-0" size="1.3rem" />
+            <button class="btn btn-lg btn-twitch rounded-4 w-100 mb-2 d-flex align-items-center justify-content-center gap-2 py-3" @click="login">
+              <Icon name="bi:twitch" class="flex-shrink-0" size="2rem" />
               <span>Sign in with Twitch</span>
             </button>
           </div>
