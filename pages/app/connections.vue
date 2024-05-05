@@ -39,14 +39,14 @@ const linkSpotify = async () => {
       <div class="col-lg-6">
         <div class="rounded-4 p-4 bg-body-secondary border border-2 position-relative">
           <form autocomplete="off" @submit.prevent="linkSpotify">
-            <div class="d-flex gap-2 justify-content-center align-items-center mb-3">
-              <Icon name="bi:spotify" size="2em" />
-              <h2 class="m-0">Spotify</h2>
-            </div>
-            <div :class="`d-flex gap-2 justify-content-center align-items-center position-absolute top-0 end-0 m-2 px-3 py-1 rounded-4 small ${spotifyConnection ? 'bg-success' : 'bg-secondary'}`">
+            <div :class="`d-flex gap-2 justify-content-center align-items-center position-absolute top-0 end-0 m-2 px-3 py-1 rounded-4 small text-body-emphasis ${spotifyConnection ? 'bg-success' : 'bg-secondary'}`">
               <Icon name="solar:link-round-angle-bold" size="1.2rem" />
               <span v-if="spotifyConnection" class="d-none d-lg-block">Linked</span>
               <span v-else class="d-none d-lg-block">Not connected</span>
+            </div>
+            <div class="d-flex gap-2 justify-content-center align-items-center mb-3">
+              <Icon name="bi:spotify" size="2em" />
+              <h2 class="m-0">Spotify</h2>
             </div>
             <div v-if="!spotifyConnection">
               <div class="form-floating mb-2">
