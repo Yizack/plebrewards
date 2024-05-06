@@ -1,4 +1,4 @@
-import { eq, and, desc } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 
 export default defineEventHandler(async (event) => {
   const { user_login } = getRouterParams(event);
@@ -51,7 +51,7 @@ export default defineEventHandler(async (event) => {
     track_artists: tables.songlists.track_artists,
     user_requested: tables.songlists.user_requested,
     date_added: tables.songlists.date_added
-  }).from(tables.songlists).where(eq(tables.songlists.user_login, user_login)).orderBy(desc(tables.songlists.date_added)).all();
+  }).from(tables.songlists).where(eq(tables.songlists.user_login, user_login)).all();
 
   let playing = false;
 
@@ -61,7 +61,7 @@ export default defineEventHandler(async (event) => {
     }
     else playing = false;
     return { ...song, playing };
-  });
+  }).reverse();
 
   return { list, currently_playing };
 });
