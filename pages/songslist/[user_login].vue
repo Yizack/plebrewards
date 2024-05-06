@@ -2,6 +2,10 @@
 const { user_login } = useRoute().params;
 
 const { data: songslist } = useFetch(`/api/spotify/songslist/${user_login}`);
+
+const openTrack = (track_id: string) => {
+  window.open(`https://open.spotify.com/track/${track_id}`, "_blank");
+};
 </script>
 
 <template>
@@ -11,11 +15,11 @@ const { data: songslist } = useFetch(`/api/spotify/songslist/${user_login}`);
       <div class="col-lg-12">
         <div class="mb-2">
           <p>Currently playing</p>
-          <div class="rounded-4 p-4 bg-body-secondary border border-2 d-flex" role="button">
-            <img :src="songslist?.currently_playing.image.url" alt="Album cover" class="rounded-4 shadow" style="width: 100px; height: 100px;">
+          <div v-if="songslist?.currently_playing" class="rounded-4 p-4 bg-body-secondary border border-2 d-flex" role="button">
+            <img :src="songslist.currently_playing.image.url" alt="Album cover" class="rounded-4 shadow" style="width: 100px; height: 100px;">
             <div class="ms-3">
-              <h2 class="m-0">{{ songslist?.currently_playing.track_name }}</h2>
-              <p class="m-0">{{ songslist?.currently_playing.track_artists }}</p>
+              <h2 class="m-0 text-body-emphasis">{{ songslist.currently_playing.track_name }}</h2>
+              <p class="m-0">{{ songslist.currently_playing.track_artists }}</p>
             </div>
           </div>
         </div>
@@ -32,7 +36,7 @@ const { data: songslist } = useFetch(`/api/spotify/songslist/${user_login}`);
               </thead>
               <tbody>
                 <template v-for="track in songslist?.list" :key="track.track_id">
-                  <tr :class="{ 'table-success': track.playing }" role="button">
+                  <tr :class="{ 'table-success': track.playing }" role="button" @click="openTrack(track.track_id)">
                     <td>{{ track.track_name }}</td>
                     <td>{{ track.track_artists }}</td>
                     <td>{{ track.user_requested }}</td>
