@@ -35,3 +35,7 @@
     width: 100%!important;
   }
 }
+
+.table tbody tr:last-child td {
+  border-bottom: 0;
+}

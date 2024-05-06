@@ -27,6 +27,13 @@ declare global {
   interface SpotifyTrackSearchResponse {
     tracks: {
       items: {
+        album: {
+          images: {
+            height: number;
+            url: string;
+            width: number;
+          }[];
+        };
         id: string;
         name: string;
         artists: {
@@ -34,6 +41,10 @@ declare global {
         }[]
       }[];
     }
+  }
+  interface SpotifyQueueResponse {
+    currently_playing: SpotifyTrackSearchResponse["tracks"]["items"][0];
+    queue: SpotifyTrackSearchResponse["tracks"]["items"];
   }
 }
 

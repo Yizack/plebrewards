@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "sqlite",
-  "id": "424a7f24-7a20-411f-8e4b-d262df9d02b1",
+  "id": "d208366b-1816-4ab8-8c5e-b220693dabe3",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "connections": {
@@ -84,6 +84,78 @@
       },
       "uniqueConstraints": {}
     },
+    "songlists": {
+      "name": "songlists",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "user_login": {
+          "name": "user_login",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "track_id": {
+          "name": "track_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "track_name": {
+          "name": "track_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "track_artists": {
+          "name": "track_artists",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "user_requested": {
+          "name": "user_requested",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "date_added": {
+          "name": "date_added",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "songlists_user_login_users_user_login_fk": {
+          "name": "songlists_user_login_users_user_login_fk",
+          "tableFrom": "songlists",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_login"
+          ],
+          "columnsTo": [
+            "user_login"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "users": {
       "name": "users",
       "columns": {
@@ -128,9 +200,25 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
+        },
+        "language": {
+          "name": "language",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'en'"
         }
       },
-      "indexes": {},
+      "indexes": {
+        "users_user_login_unique": {
+          "name": "users_user_login_unique",
+          "columns": [
+            "user_login"
+          ],
+          "isUnique": true
+        }
+      },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}

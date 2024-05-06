@@ -94,6 +94,16 @@ class Spotify {
     }).catch(() => null);
     return response;
   }
+
+  async getQueue () {
+    const response = await $fetch<SpotifyQueueResponse>(`${baseURL}/me/player/queue`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${this.access_token}`
+      }
+    }).catch(() => null);
+    return response;
+  }
 }
 
 export { Spotify };

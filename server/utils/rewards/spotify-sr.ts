@@ -15,6 +15,7 @@ export const rewardSpotifySR = async (event: H3Event, body: TwitchWebhookPost) =
     client_secret: tables.connections.client_secret,
     refresh_token: tables.connections.refresh_token,
     user_refresh_token: sql<string>`users.refresh_token`.as("user_refresh_token"),
+    language: tables.users.language
   }).from(tables.connections).leftJoin(tables.users, eq(tables.connections.id_user, tables.users.id_user)).where(eq(tables.connections.id_user, Number(webhookEvent.broadcaster_user_id))).get();
   if (!connection) throw createError({ statusCode: ErrorCode.NOT_FOUND, message: "No connection found" });
 
@@ -90,4 +91,13 @@ export const rewardSpotifySR = async (event: H3Event, body: TwitchWebhookPost) =
   }
 
   await twitchAPI.sendChatMessage(webhookEvent.broadcaster_user_id, `💿 "${track.artists} - ${track.name}" requested by @${webhookEvent.user_login} has been added to the queue.`);
+
+  await DB.insert(tables.songlists).values({
+    user_login: webhookEvent.broadcaster_user_login,
+    track_id: track.id,
+    track_name: track.name,
+    track_artists: track.artists,
+    user_requested: webhookEvent.user_login,
+    date_added: today
+  }).run();
 };
