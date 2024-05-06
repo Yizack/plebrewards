@@ -1,7 +1,9 @@
 <script setup lang="ts">
 const { user_login } = useRoute().params;
 
-const { data: songslist } = useFetch(`/api/spotify/songslist/${user_login}`);
+const { data: songslist } = await useFetch(`/api/spotify/songslist/${user_login}`);
+
+if (!songslist.value) throw createError({ statusCode: ErrorCode.NOT_FOUND, message: "Songs list not found", fatal: true });
 
 const openTrack = (track_id: string) => {
   window.open(`https://open.spotify.com/track/${track_id}`, "_blank");
@@ -9,17 +11,23 @@ const openTrack = (track_id: string) => {
 </script>
 
 <template>
-  <main class="py-4">
+  <main v-if="songslist" class="py-4">
     <h1 class="mb-4">Songslist</h1>
     <div class="row flex-gap-1">
       <div class="col-lg-12">
         <div class="mb-2">
           <p>Currently playing</p>
-          <div v-if="songslist?.currently_playing" class="rounded-4 p-4 bg-body-secondary border border-2 d-flex" role="button">
+          <div v-if="songslist.currently_playing" class="rounded-4 p-4 bg-body-secondary border border-2 d-flex" role="button" @click="openTrack(songslist!.currently_playing!.track_id)">
             <img :src="songslist.currently_playing.image.url" alt="Album cover" class="rounded-4 shadow" style="width: 100px; height: 100px;">
             <div class="ms-3">
               <h2 class="m-0 text-body-emphasis">{{ songslist.currently_playing.track_name }}</h2>
               <p class="m-0">{{ songslist.currently_playing.track_artists }}</p>
+            </div>
+          </div>
+          <div v-else class="rounded-4 p-4 bg-body-secondary border border-2 d-flex h-100" style="height: 100px;">
+            <div class="bg-body rounded-4 shadow" style="width: 100px; height: 100px;" />
+            <div class="ms-3">
+              <h2 class="m-0 text-body-emphasis">Nothing playing</h2>
             </div>
           </div>
         </div>
