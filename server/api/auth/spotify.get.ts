@@ -4,7 +4,7 @@ export default defineEventHandler(async (event) => {
   const params = getQuery(event);
   const redirect = (import.meta.dev ? SITE.url.dev : SITE.url.prod) + "/api/auth/spotify";
   if (params.client) {
-    const scopes = "user-read-private user-modify-playback-state user-read-currently-playing";
+    const scopes = "user-read-private user-modify-playback-state user-read-playback-state user-read-currently-playing";
     return Spotify.authorize(event, {
       response_type: "code",
       client_id: params.client.toString(),
