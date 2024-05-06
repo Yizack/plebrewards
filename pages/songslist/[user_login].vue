@@ -12,28 +12,34 @@ const openTrack = (track_id: string) => {
 
 <template>
   <main v-if="songslist" class="py-4">
-    <h1 class="mb-4">Songslist</h1>
+    <h1 class="mb-4">Songslist: @{{ user_login }}</h1>
     <div class="row flex-gap-1">
       <div class="col-lg-12">
-        <div class="mb-2">
-          <p>Currently playing</p>
-          <div v-if="songslist.currently_playing" class="rounded-4 p-4 bg-body-secondary border border-2 d-flex" role="button" @click="openTrack(songslist!.currently_playing!.track_id)">
-            <img :src="songslist.currently_playing.image.url" alt="Album cover" class="rounded-4 shadow" style="width: 100px; height: 100px;">
-            <div class="ms-3">
-              <h2 class="m-0 text-body-emphasis">{{ songslist.currently_playing.track_name }}</h2>
-              <p class="m-0">{{ songslist.currently_playing.track_artists }}</p>
-            </div>
+        <div class="card rounded-4 border border-2 mb-3 overflow-hidden">
+          <div class="card-header bg-primary">
+            <p class="m-0 text-dark fw-bold">Currently playing</p>
           </div>
-          <div v-else class="rounded-4 p-4 bg-body-secondary border border-2 d-flex h-100" style="height: 100px;">
-            <div class="bg-body rounded-4 shadow" style="width: 100px; height: 100px;" />
-            <div class="ms-3">
-              <h2 class="m-0 text-body-emphasis">Nothing playing</h2>
+          <div class="card-body bg-body-secondary">
+            <div v-if="songslist.currently_playing" class="d-flex p-3" role="button" @click="openTrack(songslist!.currently_playing!.track_id)">
+              <img :src="songslist.currently_playing.image.url" alt="Album cover" class="rounded-4 shadow" style="width: 100px; height: 100px;">
+              <div class="ms-3">
+                <h2 class="m-0 text-body-emphasis">{{ songslist.currently_playing.track_name }}</h2>
+                <p class="m-0">{{ songslist.currently_playing.track_artists }}</p>
+              </div>
+            </div>
+            <div v-else class="d-flex p-3 h-100" style="height: 100px;">
+              <div class="bg-body rounded-4 shadow" style="width: 100px; height: 100px;" />
+              <div class="ms-3">
+                <h2 class="m-0 text-body-emphasis">Nothing playing</h2>
+              </div>
             </div>
           </div>
         </div>
-        <div>
-          <p>Next in queue</p>
-          <div class="border border-2 rounded-4 overflow-hidden">
+        <div class="card border border-2 rounded-4 overflow-hidden">
+          <div class="card-header bg-primary">
+            <p class="m-0 text-dark fw-bold">Next in queue</p>
+          </div>
+          <div class="card-body p-0">
             <table class="table table-striped table-hover mb-0">
               <thead>
                 <tr>
