@@ -22,7 +22,7 @@ onMounted(() => {
 <template>
   <nav class="navbar bg-body-tertiary sticky-top border-bottom">
     <div class="container-fluid">
-      <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbar" aria-controls="navbar" aria-label="Toggle navigation">
+      <button class="navbar-toggler d-lg-none me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbar" aria-controls="navbar" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon" />
       </button>
       <NuxtLink class="navbar-brand d-lg-none" to="/">{{ SITE.name }}</NuxtLink>
