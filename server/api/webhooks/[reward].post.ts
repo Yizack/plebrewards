@@ -10,9 +10,7 @@ export default defineEventHandler(async (event) => {
   const MESSAGE_TYPE_VERIFICATION = "webhook_callback_verification";
 
   if (headers[MESSAGE_TYPE] === MESSAGE_TYPE_VERIFICATION) return body.challenge;
-
-  const config = useRuntimeConfig(event);
-  const isvalidWebhook = await Twitch.isValidWebhook(headers, rawBody, config.twitch.webhookSecret);
+  const isvalidWebhook = await webhooks.isValidTwitchWebhook(event);
 
   if (!isvalidWebhook) throw createError({ statusCode: ErrorCode.UNAUTHORIZED, message: "Invalid webhook" });
 

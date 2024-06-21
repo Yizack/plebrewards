@@ -23,8 +23,8 @@ export default defineEventHandler(async (event) => {
   const accessResponse = await twitchAPI.getAppAccessToken();
   if (!accessResponse) throw createError({ statusCode: ErrorCode.INTERNAL_SERVER_ERROR, message: "An error occurred. Please try again." });
 
-  const webhooks = await twitchAPI.getWebhooks(session.user.id);
-  if (!webhooks.length) return output;
+  const twitchWebhooks = await twitchAPI.getWebhooks(session.user.id);
+  if (!twitchWebhooks.length) return output;
 
   if (Twitch.isAccessTokenExpired(session.user.tokens.expires_at)) {
     await updateTwitchRefreshToken(event, twitchAPI, session.user);
@@ -34,7 +34,7 @@ export default defineEventHandler(async (event) => {
 
   if (!rewards.length) return output;
 
-  output.rewards = webhooks.map((webhook) => {
+  output.rewards = twitchWebhooks.map((webhook) => {
     const reward = rewards.find((reward) => reward.id === webhook.condition.reward_id);
     const isReward = webhook.transport.callback.includes("/api/webhooks/spotify-sr") || webhook.transport.callback.includes("/api/webhooks/twitch");
     if (!reward || !isReward) return undefined;
