@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
     id_user: tables.connections.id_user,
     client_id: tables.connections.client_id,
     client_secret: tables.connections.client_secret,
-    refresh_token: tables.connections.refresh_token,
+    refresh_token: tables.connections.refresh_token
   }).from(tables.connections).leftJoin(tables.users, eq(tables.connections.id_user, tables.users.id_user)).where(and(eq(tables.connections.type, "spotify"), eq(tables.users.user_login, user_login))).get();
 
   if (!connection) throw createError({ statusCode: ErrorCode.NOT_FOUND, message: "Spotify connection not found" });
@@ -34,7 +34,7 @@ export default defineEventHandler(async (event) => {
   const currently_playing = (!queue || !queue.currently_playing) ? null : {
     track_id: queue.currently_playing.id,
     track_name: queue.currently_playing.name,
-    track_artists: queue.currently_playing.artists.map((artist) => artist.name).join(", "),
+    track_artists: queue.currently_playing.artists.map(artist => artist.name).join(", "),
     image: {
       url: queue.currently_playing.album.images[0].url,
       width: queue.currently_playing.album.images[0].width,
@@ -56,7 +56,7 @@ export default defineEventHandler(async (event) => {
   let playing = false;
 
   const list = songslist.map((song, i) => {
-    if (currently_playing && (song.track_id === currently_playing.track_id) && !playing && (i === 0 || i > 0 && songslist[i - 1] && songslist[i - 1].track_id === next_in_queue)) {
+    if (currently_playing && (song.track_id === currently_playing.track_id) && !playing && (i === 0 || (i > 0 && songslist[i - 1] && songslist[i - 1].track_id === next_in_queue))) {
       playing = true;
     }
     else playing = false;

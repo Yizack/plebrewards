@@ -21,22 +21,22 @@ declare global {
       condition: {
         broadcaster_user_id: string;
         reward_id: string;
-      },
+      };
       created_at: string;
       transport: {
         method: string;
         callback: string;
-      },
+      };
       cost: number;
     }[];
     max_total_cost: number;
     total_cost: number;
     pagination: {
       cursor: string;
-    }
+    };
   }
   interface TwitchWebhookPost {
-    subscription: TwitchWebhooksResponse["data"][0],
+    subscription: TwitchWebhooksResponse["data"][0];
     event: {
       broadcaster_user_id: string;
       broadcaster_user_login: string;
@@ -53,9 +53,9 @@ declare global {
         title: string;
         prompt: string;
         cost: number;
-      }
-    }
-   challenge?: string;
+      };
+    };
+    challenge?: string;
   }
   interface TwitchRewardResponse {
     data: {
@@ -73,22 +73,22 @@ declare global {
       max_per_stream_setting: {
         is_enabled: boolean;
         max_per_stream: number;
-      },
+      };
       max_per_user_per_stream_setting: {
         is_enabled: boolean;
         max_per_user_per_stream: number;
-      },
+      };
       global_cooldown_setting: {
         is_enabled: boolean;
         global_cooldown_seconds: number;
-      },
+      };
       is_paused: boolean;
       is_in_stock: boolean;
       default_image: {
         url_1x: string;
         url_2x: string;
         url_4x: string;
-      },
+      };
       should_redemptions_skip_request_queue: boolean;
       redemptions_redeemed_current_stream: number;
       cooldown_expires_at: number;

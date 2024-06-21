@@ -104,7 +104,7 @@ const deleteReward = async (id_webhook: string, id_reward: string) => {
               <button type="submit" :class="`btn btn-lg ${webhook ? 'btn-danger' : 'btn-primary'} mt-2 rounded-4`" :disabled="loading || !service?.connected">
                 <Transition name="slide" mode="out-in">
                   <SpinnerCircle v-if="loading" />
-                  <span v-else>{{ webhook ? 'Delete reward' : 'Create reward'}}</span>
+                  <span v-else>{{ webhook ? 'Delete reward' : 'Create reward' }}</span>
                 </Transition>
               </button>
             </div>

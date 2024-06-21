@@ -11,14 +11,14 @@ declare global {
     transport: {
       method: string;
       callback: string;
-    },
+    };
     reward: {
       id: string;
       title: string;
       description: string;
       cost: number;
       color: string;
-    }
+    };
   }
   type ErrorCode = typeof ErrorCode;
 }

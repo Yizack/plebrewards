@@ -4,7 +4,6 @@ const baseURL = "https://api.twitch.tv/helix";
 const baseAuthURL = "https://id.twitch.tv/oauth2";
 
 class Twitch {
-
   client: string;
   secret: string;
   access_token?: string;
@@ -62,7 +61,7 @@ class Twitch {
     return response;
   }
 
-  async getCustomRewards(broadcaster_id: string) {
+  async getCustomRewards (broadcaster_id: string) {
     const rewards = await $fetch<TwitchRewardResponse>(`${baseURL}/channel_points/custom_rewards?broadcaster_id=${broadcaster_id}`, {
       headers: {
         "client-id": this.client,

@@ -71,14 +71,14 @@ export const rewardSpotifySR = async (event: H3Event, body: TwitchWebhookPost) =
     track.id = search.tracks.items[0].id;
 
     track.name = search.tracks.items[0].name;
-    track.artists = search.tracks.items[0].artists.map((artist) => artist.name).join(", ");
+    track.artists = search.tracks.items[0].artists.map(artist => artist.name).join(", ");
   }
   else {
     track.id = Spotify.getTrackIdFromURL(user_input);
     const trackResponse = await spotifyAPI.getTrack(track.id);
     if (trackResponse) {
       track.name = trackResponse.name;
-      track.artists = trackResponse.artists.map((artist) => artist.name).join(", ");
+      track.artists = trackResponse.artists.map(artist => artist.name).join(", ");
     }
   }
 

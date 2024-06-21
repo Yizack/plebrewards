@@ -38,9 +38,9 @@ declare global {
         name: string;
         artists: {
           name: string;
-        }[]
+        }[];
       }[];
-    }
+    };
   }
   interface SpotifyQueueResponse {
     currently_playing: SpotifyTrackSearchResponse["tracks"]["items"][0];

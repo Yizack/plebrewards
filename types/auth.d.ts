@@ -17,7 +17,7 @@ declare module "#auth-utils" {
       access_token: string;
       refresh_token: string;
       expires_at: number;
-    }
+    };
   }
 
   interface UserSession {

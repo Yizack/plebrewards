@@ -7,7 +7,7 @@ export const users = sqliteTable("users", {
   refresh_token: text("refresh_token").notNull(),
   created_at: integer("created_at").notNull(),
   updated_at: integer("updated_at").notNull(),
-  language: text("language").notNull().default("en"),
+  language: text("language").notNull().default("en")
 });
 
 export const connections = sqliteTable("connections", {

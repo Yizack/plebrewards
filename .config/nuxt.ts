@@ -12,7 +12,7 @@ export default defineNuxtConfig({
       link: [
         { rel: "preload", href: "/fonts/Fredoka-Regular.ttf", as: "font", type: "font/ttf", crossorigin: "anonymous" },
         { rel: "preload", href: "/fonts/Fredoka-Medium.ttf", as: "font", type: "font/ttf", crossorigin: "anonymous" },
-        { rel: "preload", href: "/fonts/Fredoka-SemiBold.ttf", as: "font", type: "font/ttf", crossorigin: "anonymous" },
+        { rel: "preload", href: "/fonts/Fredoka-SemiBold.ttf", as: "font", type: "font/ttf", crossorigin: "anonymous" }
       ],
       meta: [
         { name: "robots", content: "index, follow" }
@@ -37,7 +37,8 @@ export default defineNuxtConfig({
   ],
   eslint: {
     config: {
-      autoInit: false
+      autoInit: false,
+      stylistic: true
     }
   },
   runtimeConfig: {
@@ -73,7 +74,7 @@ export default defineNuxtConfig({
       }
     },
     prerender: {
-      routes: ["/sitemap.xml"],
+      routes: ["/sitemap.xml"]
     }
   },
   sitemap: {
@@ -85,7 +86,7 @@ export default defineNuxtConfig({
     ]
   },
   routeRules: {
-    "/": { sitemap: { priority: 1 }},
+    "/": { sitemap: { priority: 1 } },
     "/*/**": { sitemap: { priority: 0.8, lastmod: new Date().toISOString() } }
   }
 });

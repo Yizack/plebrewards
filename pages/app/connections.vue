@@ -6,11 +6,11 @@ if (!user.value) navigateTo("/");
 const { data: connections } = await useFetch(`/api/user/${user.value?.id}/connections`);
 
 const loading = ref(false);
-const spotifyConnection = ref(connections.value?.find((c) => c.type === "spotify"));
+const spotifyConnection = ref(connections.value?.find(c => c.type === "spotify"));
 
 const form = ref({
   client: spotifyConnection.value?.client_id || "",
-  secret: "",
+  secret: ""
 });
 
 const linkSpotify = async () => {

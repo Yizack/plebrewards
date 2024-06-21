@@ -1,6 +1,7 @@
 import { eq } from "drizzle-orm";
-import type { User } from "#auth-utils";
 import type { H3Event } from "h3";
+import type { User } from "#auth-utils";
+
 export { ErrorCode } from "~/types/enums/errors";
 export { SITE } from "~/utils/site";
 

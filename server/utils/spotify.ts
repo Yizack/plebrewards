@@ -4,7 +4,6 @@ const baseURL = "https://api.spotify.com/v1";
 const baseAuthURL = "https://accounts.spotify.com";
 
 class Spotify {
-
   client?: string;
   secret?: string;
   access_token?: string;
@@ -31,7 +30,7 @@ class Spotify {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
         "Authorization": `Basic ${btoa(`${this.client}:${this.secret}`)}`
-      },
+      }
     }).catch(() => null);
     return response;
   }
@@ -43,7 +42,7 @@ class Spotify {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
         "Authorization": `Basic ${btoa(`${this.client}:${this.secret}`)}`
-      },
+      }
     }).catch(() => null);
     if (response) this.access_token = response.access_token;
     return response;
@@ -81,7 +80,7 @@ class Spotify {
 
   static getTrackIdFromURL (url: string) {
     const urlWithoutQuery = url.split("?")[0];
-    const parts = urlWithoutQuery .split("/");
+    const parts = urlWithoutQuery.split("/");
     return parts[parts.length - 1];
   }
 

@@ -35,7 +35,7 @@ export default defineEventHandler(async (event) => {
   if (!rewards.length) return output;
 
   output.rewards = twitchWebhooks.map((webhook) => {
-    const reward = rewards.find((reward) => reward.id === webhook.condition.reward_id);
+    const reward = rewards.find(reward => reward.id === webhook.condition.reward_id);
     const isReward = webhook.transport.callback.includes("/api/webhooks/spotify-sr") || webhook.transport.callback.includes("/api/webhooks/twitch");
     if (!reward || !isReward) return undefined;
 
@@ -53,7 +53,7 @@ export default defineEventHandler(async (event) => {
         color: reward.background_color
       }
     };
-  }).filter((webhook) => webhook !== undefined) as Rewards[];
+  }).filter(webhook => webhook !== undefined) as Rewards[];
 
   return output;
 });
