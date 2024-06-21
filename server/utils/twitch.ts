@@ -1,5 +1,3 @@
-import type { HTTPHeaderName } from "h3";
-
 const baseURL = "https://api.twitch.tv/helix";
 const baseAuthURL = "https://id.twitch.tv/oauth2";
 
@@ -124,29 +122,6 @@ class Twitch {
         "Authorization": `Bearer ${this.app_access_token}`
       }
     }).then(() => true).catch(() => false);
-  }
-
-  static async isValidWebhook (headers: Partial<Record<HTTPHeaderName, string | undefined>>, body: string, secret: string) {
-    const TWITCH_MESSAGE_ID = "Twitch-Eventsub-Message-Id".toLowerCase();
-    const TWITCH_MESSAGE_TIMESTAMP = "Twitch-Eventsub-Message-Timestamp".toLowerCase();
-    const TWITCH_MESSAGE_SIGNATURE = "Twitch-Eventsub-Message-Signature".toLowerCase();
-    const HMAC_PREFIX = "sha256=";
-
-    const message_id = headers[TWITCH_MESSAGE_ID];
-    const message_timestamp = headers[TWITCH_MESSAGE_TIMESTAMP];
-    const message_signature = headers[TWITCH_MESSAGE_SIGNATURE];
-
-    if (!message_id || !message_timestamp || !message_signature) return false;
-
-    const message = message_id + message_timestamp + body;
-
-    const encoder = new TextEncoder();
-    const algorithm = { name: "HMAC", hash: "SHA-256" };
-
-    const key = await crypto.subtle.importKey("raw", encoder.encode(secret), algorithm, false, ["sign"]);
-    const signature = await crypto.subtle.sign(algorithm.name, key, encoder.encode(message));
-    const hmac = HMAC_PREFIX + Buffer.from(signature).toString("hex");
-    return hmac === message_signature;
   }
 
   async sendChatMessage (broadcaster_id: string, message: string) {

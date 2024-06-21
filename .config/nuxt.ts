@@ -33,7 +33,7 @@ export default defineNuxtConfig({
     "@nuxtjs/color-mode",
     "@nuxtjs/sitemap",
     "nuxt-auth-utils",
-    "nuxt-webhooks-validator"
+    "nuxt-webhook-validators"
   ],
   eslint: {
     config: {
@@ -42,7 +42,7 @@ export default defineNuxtConfig({
     }
   },
   runtimeConfig: {
-    webhooks: {
+    webhook: {
       twitch: {
         secretKey: ""
       }
