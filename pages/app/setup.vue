@@ -127,12 +127,12 @@ const deleteReward2 = async (id_webhook: string, id_reward: string) => {
             </div>
             <div class="form-floating mb-2">
               <InputLeft max="45" :text="formSr.title" class="position-absolute top-0 end-0 px-2 pt-1" />
-              <input id="title" v-model="formSr.title" type="text" class="form-control" placeholder="Title" maxlength="45" required>
+              <input id="title" v-model="formSr.title" type="text" class="form-control" placeholder="Title" maxlength="45" required :disabled="webhook ? true : false">
               <label for="client">Title</label>
             </div>
             <div class="form-floating mb-2">
               <InputLeft max="200" :text="formSr.description" class="position-absolute top-0 end-0 px-2 pt-1" />
-              <textarea id="description" v-model="formSr.description" type="text" class="form-control" placeholder="Description" maxlength="200" style="height: 150px;" />
+              <textarea id="description" v-model="formSr.description" type="text" class="form-control" placeholder="Description" maxlength="200" style="height: 150px;" :disabled="webhook ? true : false" />
               <label for="client">Description</label>
             </div>
             <div class="input-group mb-2">
@@ -140,12 +140,12 @@ const deleteReward2 = async (id_webhook: string, id_reward: string) => {
                 <IconsReward size="1.4rem" />
               </span>
               <div class="form-floating">
-                <input id="cost" v-model="formSr.cost" type="number" class="form-control" placeholder="Cost" required>
+                <input id="cost" v-model="formSr.cost" type="number" class="form-control" placeholder="Cost" required :disabled="webhook ? true : false">
                 <label for="cost">Cost</label>
               </div>
             </div>
             <div class="mb-2 d-flex gap-2 align-items-center">
-              <input id="color" v-model="formSr.color" type="color" class="form-control form-control-color" title="Choose your color">
+              <input id="color" v-model="formSr.color" type="color" class="form-control form-control-color" title="Choose your color" :disabled="webhook ? true : false">
               <label for="color">Background color</label>
             </div>
             <div v-if="!service?.connected" class="alert alert-dark d-flex align-items-center" role="alert">
@@ -177,12 +177,12 @@ const deleteReward2 = async (id_webhook: string, id_reward: string) => {
             </div>
             <div class="form-floating mb-2">
               <InputLeft max="45" :text="formSkip.title" class="position-absolute top-0 end-0 px-2 pt-1" />
-              <input id="title" v-model="formSkip.title" type="text" class="form-control" placeholder="Title" maxlength="45" required>
+              <input id="title" v-model="formSkip.title" type="text" class="form-control" placeholder="Title" maxlength="45" required :disabled="webhook2 ? true : false">
               <label for="client">Title</label>
             </div>
             <div class="form-floating mb-2">
               <InputLeft max="200" :text="formSkip.description" class="position-absolute top-0 end-0 px-2 pt-1" />
-              <textarea id="description" v-model="formSkip.description" type="text" class="form-control" placeholder="Description" maxlength="200" style="height: 150px;" />
+              <textarea id="description" v-model="formSkip.description" type="text" class="form-control" placeholder="Description" maxlength="200" style="height: 150px;" :disabled="webhook2 ? true : false" />
               <label for="client">Description</label>
             </div>
             <div class="input-group mb-2">
@@ -190,12 +190,12 @@ const deleteReward2 = async (id_webhook: string, id_reward: string) => {
                 <IconsReward size="1.4rem" />
               </span>
               <div class="form-floating">
-                <input id="cost" v-model="formSkip.cost" type="number" class="form-control" placeholder="Cost" required>
+                <input id="cost" v-model="formSkip.cost" type="number" class="form-control" placeholder="Cost" required :disabled="webhook2 ? true : false">
                 <label for="cost">Cost</label>
               </div>
             </div>
             <div class="mb-2 d-flex gap-2 align-items-center">
-              <input id="color" v-model="formSkip.color" type="color" class="form-control form-control-color" title="Choose your color">
+              <input id="color" v-model="formSkip.color" type="color" class="form-control form-control-color" title="Choose your color" :disabled="webhook2 ? true : false">
               <label for="color">Background color</label>
             </div>
             <div v-if="!service2?.connected" class="alert alert-dark d-flex align-items-center" role="alert">
