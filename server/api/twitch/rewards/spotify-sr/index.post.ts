@@ -30,7 +30,7 @@ export default defineEventHandler(async (event) => {
     webhook: "spotify-sr",
     broadcaster_id: session.user.id,
     reward_id: rewards.data[0].id,
-    secret: config.twitch.webhookSecret
+    secret: config.webhook.twitch.secretKey
   });
   if (!webhook) throw createError({ statusCode: ErrorCode.INTERNAL_SERVER_ERROR, message: "Failed to subscribe to reward webhook. Please try again." });
 

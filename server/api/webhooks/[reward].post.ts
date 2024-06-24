@@ -18,6 +18,8 @@ export default defineEventHandler(async (event) => {
     case "spotify-sr":
     case "twitch":
       return await rewardSpotifySR(event, body);
+    case "spotify-skip":
+      return await rewardSpotifySkip(event, body);
     default:
       return body;
   }
