@@ -17,7 +17,8 @@ export default defineConfig({
         text: "Twitch Rewards",
         collapsed: false,
         items: [
-          { text: "Spotify Song Requests", link: "/rewards/spotify-sr" }
+          { text: "Spotify Song Requests", link: "/rewards/spotify-sr" },
+          { text: "Spotify Skip to Next Song", link: "/rewards/spotify-skip" }
         ]
       },
       {

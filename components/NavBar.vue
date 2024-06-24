@@ -45,11 +45,16 @@ onMounted(() => {
                 <span>Connections</span>
               </NuxtLink>
             </li>
-            <li class="nav-item">
-              <NuxtLink class="nav-link d-flex align-items-center gap-2" aria-current="page" to="/app/setup">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="/app/setup" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <Icon name="solar:star-bold" size="1.3rem" />
                 <span>Setup</span>
-              </NuxtLink>
+              </a>
+              <ul class="dropdown-menu">
+                <li v-for="(reward, name) in REWARDS" :key="name">
+                  <NuxtLink class="dropdown-item" :to="`/app/setup/${name}`">{{ reward.title }}</NuxtLink>
+                </li>
+              </ul>
             </li>
           </ul>
           <div>

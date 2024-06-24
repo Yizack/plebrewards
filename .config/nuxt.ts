@@ -29,12 +29,13 @@ export default defineNuxtConfig({
   ],
   modules: [
     "@nuxt/eslint",
-    "nuxt-icon",
+    "@nuxt/icon",
     "@nuxtjs/color-mode",
     "@nuxtjs/sitemap",
     "nuxt-auth-utils",
     "nuxt-webhook-validators"
   ],
+  icon: { mode: "svg" },
   eslint: {
     config: {
       autoInit: false,
@@ -87,6 +88,7 @@ export default defineNuxtConfig({
   },
   routeRules: {
     "/": { sitemap: { priority: 1 } },
-    "/*/**": { sitemap: { priority: 0.8, lastmod: new Date().toISOString() } }
+    "/*/**": { sitemap: { priority: 0.8, lastmod: new Date().toISOString() } },
+    "/api/_nuxt_icon/**": { cache: { maxAge: 1.577e+7 } }
   }
 });
