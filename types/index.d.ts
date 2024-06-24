@@ -1,4 +1,4 @@
-import type { ErrorCode } from "~/types/enums/errors";
+import type { ErrorCode } from "~~/types/enums/errors";
 
 declare global {
   interface Toast {

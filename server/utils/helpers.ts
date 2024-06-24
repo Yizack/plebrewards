@@ -2,8 +2,8 @@ import { eq } from "drizzle-orm";
 import type { H3Event } from "h3";
 import type { User } from "#auth-utils";
 
-export { ErrorCode } from "~/types/enums/errors";
-export { SITE } from "~/utils/site";
+export { ErrorCode } from "~~/types/enums/errors";
+export { SITE } from "~~/app/utils/site";
 
 export const updateTwitchRefreshToken = async (event: H3Event, twitchAPI: InstanceType<typeof Twitch>, user: User) => {
   const refreshResponse = await twitchAPI.refreshToken(user.tokens.refresh_token);
