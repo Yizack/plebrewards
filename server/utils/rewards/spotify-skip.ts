@@ -48,13 +48,11 @@ export const rewardSpotifySkip = async (event: H3Event, body: TwitchWebhookPost)
 
   setResponseStatus(event, 204);
 
-  const moderators = await twitchAPI.getMods(webhookEvent.broadcaster_user_id, webhookEvent.user_id);
+  await spotifyAPI.skipToNext();
+  await twitchAPI.sendChatMessage(webhookEvent.broadcaster_user_id, `${webhookEvent.user_name} -> Executed skip to next song.`);
 
+  const moderators = await twitchAPI.getMods(webhookEvent.broadcaster_user_id, webhookEvent.user_id);
   if (moderators.some(data => data.user_id === webhookEvent.user_id)) {
-    await twitchAPI.sendChatMessage(webhookEvent.broadcaster_user_id, `${webhookEvent.user_name} -> Executed skip to next song.`);
     await twitchAPI.updateRedemption(webhookEvent.id, webhookEvent.broadcaster_user_id, webhookEvent.reward.id, "CANCELED");
-  }
-  else {
-    await twitchAPI.sendChatMessage(webhookEvent.broadcaster_user_id, `${webhookEvent.user_name} -> Executed skip to next song.`);
   }
 };
