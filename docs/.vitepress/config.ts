@@ -8,6 +8,7 @@ export default defineConfig({
   title: "Pleb Rewards",
   description: "Pleb Rewards for your Twitch Channel",
   cleanUrls: true,
+  lastUpdated: true,
   themeConfig: {
     nav: [
 
