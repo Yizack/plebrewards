@@ -10,7 +10,7 @@ const login = async () => {
 <template>
   <main>
     <div class="container d-flex justify-content-center align-items-center vh-100 text-body-emphasis">
-      <div class="col-lg-8 mx-auto shadow" style="height: 80%">
+      <div class="col-12 col-lg-8 mx-auto shadow" style="height: 80%">
         <div class="d-flex flex-column flex-lg-row rounded-4 bg-body-secondary overflow-hidden h-100">
           <div class="col-lg-6 p-4 p-lg-5" style="background-image: url('/images/login.jpg'); background-size: cover; min-height: 30%;">
             <h1 class="m-0">{{ SITE.name }}</h1>
