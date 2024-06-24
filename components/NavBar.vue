@@ -14,6 +14,13 @@ onMounted(() => {
   $bootstrap.hideOffcanvas(navbar.value);
   const navItems = navbar.value.querySelectorAll(".nav-item");
   for (const navItem of navItems) {
+    if (navItem.querySelector(".dropdown-toggle")) {
+      const dropdownItems = navItem.querySelectorAll(".dropdown-item");
+      for (const dropdownItem of dropdownItems) {
+        dropdownItem.setAttribute("data-bs-dismiss", "offcanvas");
+      }
+      continue;
+    }
     navItem.setAttribute("data-bs-dismiss", "offcanvas");
   }
 });
@@ -33,7 +40,7 @@ onMounted(() => {
         </div>
         <div class="offcanvas-body d-flex flex-column justify-content-between">
           <ul class="navbar-nav flex-grow-1 gap-1">
-            <li class="nav-item ">
+            <li class="nav-item">
               <NuxtLink class="nav-link d-flex align-items-center gap-2" aria-current="page" to="/app">
                 <Icon name="solar:smile-circle-bold" size="1.3rem" />
                 <span>Home</span>
