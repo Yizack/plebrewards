@@ -40,8 +40,8 @@ class Twitch {
     return response;
   }
 
-  async createCustomReward (options: { broadcaster_id: string, title: string, description: string, cost: number, color?: string }) {
-    const { broadcaster_id, title, description, cost, color } = options;
+  async createCustomReward (options: { broadcaster_id: string, title: string, description: string, cost: number, color?: string, input_required: boolean }) {
+    const { broadcaster_id, title, description, cost, color, input_required } = options;
     const response = await $fetch<TwitchRewardResponse>(`${baseURL}/channel_points/custom_rewards?broadcaster_id=${broadcaster_id}`, {
       method: "POST",
       headers: {
@@ -52,7 +52,7 @@ class Twitch {
         title,
         prompt: description,
         cost,
-        is_user_input_required: true,
+        is_user_input_required: input_required,
         background_color: color || "#1ED760"
       }
     }).catch(() => null);
@@ -154,6 +154,16 @@ class Twitch {
 
   static isAccessTokenExpired (expires_at: number) {
     return Date.now() >= expires_at;
+  }
+
+  async getMods (broadcaster_id: string, user_id: string) {
+    const mods = await $fetch<TwitchModsResponse>(`${baseURL}/mods?broadcaster_id=${broadcaster_id}&user_id=${user_id}`, {
+      headers: {
+        "client-id": this.client,
+        "Authorization": `Bearer ${this.access_token}`
+      }
+    }).catch(() => null);
+    return mods ? mods.data : [];
   }
 }
 

@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
     description: body.description.toString(),
     cost: Number(body.cost),
     color: body.color?.toString(),
-    input_required: true
+    input_required: false
   });
   if (!rewards) throw createError({ statusCode: ErrorCode.BAD_REQUEST, message: "Failed to create reward" });
 
@@ -27,7 +27,7 @@ export default defineEventHandler(async (event) => {
   if (!accessResponse) throw createError({ statusCode: ErrorCode.BAD_REQUEST, message: "Failed to get app access token" });
 
   const webhook = await twitchAPI.subscribeToWebhook({
-    webhook: "spotify-sr",
+    webhook: "spotify-skip",
     broadcaster_id: session.user.id,
     reward_id: rewards.data[0].id,
     secret: config.webhook.twitch.secretKey

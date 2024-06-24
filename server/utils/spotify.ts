@@ -103,6 +103,15 @@ class Spotify {
     }).catch(() => null);
     return response;
   }
+
+  async skipToNext () {
+    return await $fetch(`${baseURL}/me/player/next`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${this.access_token}`
+      }
+    }).then(() => true).catch(() => false);
+  }
 }
 
 export { Spotify };

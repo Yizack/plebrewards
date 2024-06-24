@@ -94,6 +94,16 @@ declare global {
       cooldown_expires_at: number;
     }[];
   }
+  interface TwitchModsResponse {
+    data: {
+      user_id: string;
+      user_login: string;
+      user_name: string;
+    }[];
+    pagination: {
+      cursor: string;
+    };
+  }
 }
 
 export {};
