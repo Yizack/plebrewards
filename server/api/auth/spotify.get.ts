@@ -14,8 +14,8 @@ export default defineEventHandler(async (event) => {
   }
 
   const session = await requireUserSession(event);
-  const DB = useDB();
-  const credentials = await DB.select({
+
+  const credentials = await db.select({
     client_id: tables.connections.client_id,
     client_secret: tables.connections.client_secret,
     id_user: tables.connections.id_user
@@ -24,25 +24,25 @@ export default defineEventHandler(async (event) => {
     eq(tables.connections.id_user, Number(session.user.id))
   )).get();
 
-  if (!credentials) throw createError({ statusCode: 404, message: "No Spotify credentials found" });
+  if (!credentials) throw createError({ status: 404, message: "No Spotify credentials found" });
 
   const spotifyAPI = new Spotify({
     client: credentials.client_id,
     secret: credentials.client_secret
   });
 
-  if (!params.code) throw createError({ statusCode: 400, message: "No code provided" });
+  if (!params.code) throw createError({ status: 400, message: "No code provided" });
 
   const oauth = await spotifyAPI.oauthCallback(params.code.toString(), redirect);
 
-  if (!oauth) throw createError({ statusCode: 500, message: "Failed to authenticate with Spotify App" });
+  if (!oauth) throw createError({ status: 500, message: "Failed to authenticate with Spotify App" });
 
-  const connection = await DB.update(tables.connections).set({
+  const connection = await db.update(tables.connections).set({
     refresh_token: oauth.refresh_token,
     updated_at: Date.now()
   }).where(eq(tables.connections.id_user, credentials.id_user)).returning().get();
 
-  if (!connection) throw createError({ statusCode: 500, message: "Failed to update connection" });
+  if (!connection) throw createError({ status: 500, message: "Failed to update connection" });
 
   await sendRedirect(event, "/app/connections");
 });

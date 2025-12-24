@@ -6,8 +6,7 @@ export default defineEventHandler(async (event) => {
 
   const type = query.type ? eq(tables.connections.type, query.type.toString()) : undefined;
 
-  const DB = useDB();
-  return DB.select({
+  return db.select({
     type: tables.connections.type,
     client_id: tables.connections.client_id,
     created_at: tables.connections.created_at,

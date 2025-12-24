@@ -80,8 +80,8 @@ class Spotify {
 
   static getTrackIdFromURL (url: string) {
     const urlWithoutQuery = url.split("?")[0];
-    const parts = urlWithoutQuery.split("/");
-    return parts[parts.length - 1];
+    const parts = urlWithoutQuery?.split("/");
+    return parts?.[parts.length - 1];
   }
 
   async getTrack (trackId: string) {

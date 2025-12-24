@@ -1,0 +1,25 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "plebrewards",
+  "compatibility_date": "2025-12-24",
+  "main": ".output/server/index.mjs",
+  "compatibility_flags": ["nodejs_compat"],
+  "routes": [
+    {
+      "pattern": "plebrewards.yizack.com",
+      "custom_domain": true
+    }
+  ],
+  "assets": {
+    "binding": "ASSETS",
+    "directory": ".output/public"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "plebrewards",
+      "database_id": "6e693fac-04fd-4264-85f0-c56bfef64d36",
+      "migrations_dir": ".output/server/db/migrations"
+    }
+  ]
+}

@@ -5,18 +5,16 @@ export const rewardSpotifySkip = async (event: H3Event, body: TwitchWebhookPost)
   const config = useRuntimeConfig(event);
 
   const webhookEvent = body.event;
-
-  const DB = useDB();
   const today = Date.now();
 
-  const connection = await DB.select({
+  const connection = await db.select({
     client_id: tables.connections.client_id,
     client_secret: tables.connections.client_secret,
     refresh_token: tables.connections.refresh_token,
     user_refresh_token: sql<string>`users.refresh_token`.as("user_refresh_token"),
     language: tables.users.language
   }).from(tables.connections).leftJoin(tables.users, eq(tables.connections.id_user, tables.users.id_user)).where(eq(tables.connections.id_user, Number(webhookEvent.broadcaster_user_id))).get();
-  if (!connection) throw createError({ statusCode: ErrorCode.NOT_FOUND, message: "No connection found" });
+  if (!connection) throw createError({ status: ErrorCode.NOT_FOUND, message: "No connection found" });
 
   const spotifyAPI = new Spotify({
     client: connection.client_id,
@@ -29,18 +27,18 @@ export const rewardSpotifySkip = async (event: H3Event, body: TwitchWebhookPost)
   });
 
   const spotifyTokens = await spotifyAPI.refreshToken(connection.refresh_token);
-  if (!spotifyTokens) throw createError({ statusCode: ErrorCode.BAD_REQUEST, message: "Failed to get Spotify access token" });
+  if (!spotifyTokens) throw createError({ status: ErrorCode.BAD_REQUEST, message: "Failed to get Spotify access token" });
   if (spotifyTokens.refresh_token !== connection.refresh_token) {
-    await DB.update(tables.users).set({
+    await db.update(tables.users).set({
       refresh_token: spotifyTokens.refresh_token,
       updated_at: today
     }).where(eq(tables.users.id_user, Number(webhookEvent.broadcaster_user_id))).run();
   }
 
   const twitchTokens = await twitchAPI.refreshToken(connection.user_refresh_token);
-  if (!twitchTokens) throw createError({ statusCode: ErrorCode.BAD_REQUEST, message: "Failed to get Twitch access token" });
+  if (!twitchTokens) throw createError({ status: ErrorCode.BAD_REQUEST, message: "Failed to get Twitch access token" });
   if (twitchTokens.refresh_token !== connection.user_refresh_token) {
-    await DB.update(tables.users).set({
+    await db.update(tables.users).set({
       refresh_token: twitchTokens.refresh_token,
       updated_at: today
     }).where(eq(tables.users.id_user, Number(webhookEvent.broadcaster_user_id))).run();

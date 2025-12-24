@@ -5,8 +5,7 @@ export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig(event);
   const output: { connected: boolean, rewards: Rewards[] } = { connected: false, rewards: [] };
 
-  const DB = useDB();
-  const connection = await DB.select({
+  const connection = await db.select({
     type: tables.connections.type
   }).from(tables.connections).where(and(eq(tables.connections.id_user, Number(session.user.id)), eq(tables.connections.type, "spotify"))).get();
 
@@ -21,7 +20,7 @@ export default defineEventHandler(async (event) => {
   });
 
   const accessResponse = await twitchAPI.getAppAccessToken();
-  if (!accessResponse) throw createError({ statusCode: ErrorCode.INTERNAL_SERVER_ERROR, message: "An error occurred. Please try again." });
+  if (!accessResponse) throw createError({ status: ErrorCode.INTERNAL_SERVER_ERROR, message: "An error occurred. Please try again." });
 
   const twitchWebhooks = await twitchAPI.getWebhooks(session.user.id);
   if (!twitchWebhooks.length) return output;

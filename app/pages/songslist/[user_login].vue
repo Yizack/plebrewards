@@ -3,7 +3,7 @@ const { user_login } = useRoute().params;
 
 const { data: songslist } = await useFetch(`/api/spotify/songslist/${user_login}`);
 
-if (!songslist.value) throw createError({ statusCode: ErrorCode.NOT_FOUND, message: "Songs list not found", fatal: true });
+if (!songslist.value) throw createError({ status: ErrorCode.NOT_FOUND, message: "Songs list not found", fatal: true });
 
 const openTrack = (track_id: string) => {
   window.open(`https://open.spotify.com/track/${track_id}`, "_blank");

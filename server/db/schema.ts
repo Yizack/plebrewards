@@ -18,9 +18,9 @@ export const connections = sqliteTable("connections", {
   client_secret: text("client_secret").notNull(),
   created_at: integer("created_at").notNull(),
   updated_at: integer("updated_at").notNull()
-}, table => ({
-  pk: primaryKey({ columns: [table.id_user, table.type] })
-}));
+}, table => [
+  primaryKey({ columns: [table.id_user, table.type] })
+]);
 
 export const songlists = sqliteTable("songlists", {
   id: integer("id").primaryKey(),

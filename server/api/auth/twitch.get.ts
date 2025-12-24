@@ -1,4 +1,4 @@
-export default oauth.twitchEventHandler({
+export default defineOAuthTwitchEventHandler({
   config: {
     emailRequired: true,
     scope: ["channel:manage:redemptions", "user:write:chat", "moderation:read"]
@@ -13,8 +13,7 @@ export default oauth.twitchEventHandler({
       expires_at: today + (result.tokens.expires_in * 1000)
     };
 
-    const DB = useDB();
-    const app_user = await DB.insert(tables.users).values({
+    const app_user = await db.insert(tables.users).values({
       id_user: Number(user.id),
       user_login: user.login,
       username: user.display_name,

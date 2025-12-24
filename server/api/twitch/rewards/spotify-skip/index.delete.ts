@@ -11,13 +11,13 @@ export default defineEventHandler(async (event) => {
 
   const accessResponse = await twitchAPI.getAppAccessToken();
 
-  if (!accessResponse) throw createError({ statusCode: ErrorCode.INTERNAL_SERVER_ERROR, message: "Failed to get app access token" });
+  if (!accessResponse) throw createError({ status: ErrorCode.INTERNAL_SERVER_ERROR, message: "Failed to get app access token" });
 
   if (Twitch.isAccessTokenExpired(session.user.tokens.expires_at)) {
     await updateTwitchRefreshToken(event, twitchAPI, session.user);
   }
 
-  if (!query.id_webhook || !query.id_reward) throw createError({ statusCode: ErrorCode.BAD_REQUEST, message: "Query parameters not valid" });
+  if (!query.id_webhook || !query.id_reward) throw createError({ status: ErrorCode.BAD_REQUEST, message: "Query parameters not valid" });
 
   const deleteWebhook = await twitchAPI.deleteWebhook(query.id_webhook.toString());
   const deleteRweward = await twitchAPI.deleteCustomReward(session.user.id, query.id_reward.toString());

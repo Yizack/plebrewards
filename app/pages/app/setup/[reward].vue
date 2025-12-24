@@ -2,11 +2,11 @@
 definePageMeta({ layout: "app", middleware: "session" });
 
 const params = useRoute().params;
-const reward = computed(() => params.reward.toString());
+const reward = computed(() => params.reward!.toString());
 
 if (!REWARDS[reward.value]) {
   throw createError({
-    statusCode: ErrorCode.NOT_FOUND,
+    status: ErrorCode.NOT_FOUND,
     message: "Reward not found",
     fatal: true
   });
@@ -44,10 +44,10 @@ const createReward = async () => {
   if (!newWebhook) return;
   $toasts.add({ message: "Reward added to your Twitch channel", success: true });
   webhook.value = {
-    id: newWebhook.data[0].id,
-    transport: newWebhook.data[0].transport,
+    id: newWebhook.data[0]!.id,
+    transport: newWebhook.data[0]!.transport,
     reward: {
-      id: newWebhook.data[0].condition.reward_id,
+      id: newWebhook.data[0]!.condition.reward_id,
       title: form.value.title,
       description: form.value.description,
       cost: Number(form.value.cost),
@@ -83,7 +83,7 @@ const deleteReward = async (id_webhook: string, id_reward: string) => {
             </div>
             <div class="d-flex gap-2 justify-content-center align-items-center mb-3">
               <Icon name="bi:twitch" size="2em" />
-              <h2 class="m-0">{{ REWARDS[reward].title }}</h2>
+              <h2 class="m-0">{{ REWARDS[reward]!.title }}</h2>
             </div>
             <div class="form-floating mb-2">
               <InputLeft max="45" :text="form.title" class="position-absolute top-0 end-0 px-2 pt-1" />
