@@ -84,13 +84,28 @@ export default defineNuxtConfig({
       dialect: "sqlite"
     }
   },
+  vite: {
+    css: {
+      preprocessorOptions: {
+        scss: {
+          silenceDeprecations: ["color-functions", "import", "global-builtin", "if-function"]
+        }
+      }
+    }
+  },
   eslint: {
     config: {
       autoInit: false,
       stylistic: true
     }
   },
-  icon: { mode: "svg" },
+  icon: {
+    mode: "svg",
+    clientBundle: {
+      scan: true,
+      sizeLimitKb: 2048
+    }
+  },
   sitemap: {
     xslColumns: [
       { label: "URL", width: "65%" },
