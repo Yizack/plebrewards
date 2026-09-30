@@ -1,4 +1,4 @@
-import { eq, sql } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import type { H3Event } from "h3";
 
 export const rewardSpotifySkip = async (event: H3Event, body: TwitchWebhookPost) => {
@@ -13,7 +13,10 @@ export const rewardSpotifySkip = async (event: H3Event, body: TwitchWebhookPost)
     refresh_token: tables.connections.refresh_token,
     user_refresh_token: sql<string>`users.refresh_token`.as("user_refresh_token"),
     language: tables.users.language
-  }).from(tables.connections).leftJoin(tables.users, eq(tables.connections.id_user, tables.users.id_user)).where(eq(tables.connections.id_user, Number(webhookEvent.broadcaster_user_id))).get();
+  }).from(tables.connections).leftJoin(tables.users, eq(tables.connections.id_user, tables.users.id_user)).where(and(
+    eq(tables.connections.id_user, Number(webhookEvent.broadcaster_user_id)),
+    eq(tables.connections.type, "spotify")
+  )).get();
   if (!connection) throw createError({ status: ErrorCode.NOT_FOUND, message: "No connection found" });
 
   const spotifyAPI = new Spotify({
@@ -28,11 +31,14 @@ export const rewardSpotifySkip = async (event: H3Event, body: TwitchWebhookPost)
 
   const spotifyTokens = await spotifyAPI.refreshToken(connection.refresh_token);
   if (!spotifyTokens) throw createError({ status: ErrorCode.BAD_REQUEST, message: "Failed to get Spotify access token" });
-  if (spotifyTokens.refresh_token !== connection.refresh_token) {
-    await db.update(tables.users).set({
+  if (spotifyTokens.refresh_token && spotifyTokens.refresh_token !== connection.refresh_token) {
+    await db.update(tables.connections).set({
       refresh_token: spotifyTokens.refresh_token,
       updated_at: today
-    }).where(eq(tables.users.id_user, Number(webhookEvent.broadcaster_user_id))).run();
+    }).where(and(
+      eq(tables.connections.id_user, Number(webhookEvent.broadcaster_user_id)),
+      eq(tables.connections.type, "spotify")
+    )).run();
   }
 
   const twitchTokens = await twitchAPI.refreshToken(connection.user_refresh_token);

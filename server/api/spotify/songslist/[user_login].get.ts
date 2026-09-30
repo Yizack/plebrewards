@@ -26,11 +26,14 @@ export default defineEventHandler(async (event) => {
 
   const spotifyTokens = await spotifyAPI.refreshToken(connection.refresh_token);
   if (!spotifyTokens) throw createError({ status: ErrorCode.BAD_REQUEST, message: "Failed to get Spotify access token" });
-  if (spotifyTokens.refresh_token !== connection.refresh_token) {
-    await db.update(tables.users).set({
+  if (spotifyTokens.refresh_token && spotifyTokens.refresh_token !== connection.refresh_token) {
+    await db.update(tables.connections).set({
       refresh_token: spotifyTokens.refresh_token,
       updated_at: today
-    }).where(eq(tables.users.id_user, connection.id_user)).run();
+    }).where(and(
+      eq(tables.connections.id_user, connection.id_user),
+      eq(tables.connections.type, "spotify")
+    )).run();
   }
 
   const queue = await spotifyAPI.getQueue();
